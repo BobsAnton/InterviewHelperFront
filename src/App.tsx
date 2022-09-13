@@ -1,5 +1,5 @@
 import React from 'react'
-import Questions from './components/Questions'
+import { QuestionsTable } from './features/questions/QuestionsTable';
 
 const App = () => {
   return (
@@ -7,7 +7,7 @@ const App = () => {
       <h1>
         Create React App Without CRA ☘️
       </h1>
-      <Questions/>
+      <QuestionsTable/>
     </>
   )
 }
