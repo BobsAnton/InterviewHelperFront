@@ -49,7 +49,7 @@ export const AddQuestionForm = () => {
 	const canSave = [name, description, complexity, technicalFieldName].every(Boolean) && addRequestStatus === 'idle';
 
 	return (
-		<Paper sx={{ marginTop: 1, padding: 1  }}>
+		<Paper sx={{ marginTop: 1, padding: 1 }}>
 			{ (error !== null) ? (<Alert severity="error"><AlertTitle>Error</AlertTitle>{error}</Alert>) : (<></>) }
 			<FormGroup sx={{ marginTop: 3}}>
 				<Input placeholder="Name" value={name} onChange={onNameChanged} />

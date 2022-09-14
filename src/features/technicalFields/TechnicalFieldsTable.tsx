@@ -27,8 +27,8 @@ export const TechnicalFieldsTable = () => {
 
 	return (
 		<>
-		  <TableContainer sx={{ width: 300 }} component={Paper}>
-			  <Table sx={{ minWidth: 300 }} size="small" aria-label="a dense table">
+		  <TableContainer component={Paper}>
+			  <Table size="small" aria-label="a dense table">
 				  <TableHead sx={{ backgroundColor: '#C0C0C0' }}>
 					  <TableRow>
 						  <TableCell>Technical field</TableCell>

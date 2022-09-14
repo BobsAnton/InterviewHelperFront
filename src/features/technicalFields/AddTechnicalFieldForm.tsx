@@ -39,7 +39,7 @@ export const AddTechnicalFieldForm = () => {
 	const canSave = [name, order].every(Boolean) && addRequestStatus === 'idle';
 
 	return (
-		<Paper sx={{ marginTop: 1, padding: 1, maxWidth: 285 }}>
+		<Paper sx={{ marginTop: 1, padding: 1 }}>
 			{ (error !== null) ? (<Alert severity="error"><AlertTitle>Error</AlertTitle>{error}</Alert>) : (<></>) }
 			<FormGroup sx={{ marginTop: 3 }}>
 				<Input placeholder="Name" value={name} onChange={onNameChanged} />

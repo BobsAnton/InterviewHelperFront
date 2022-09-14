@@ -27,8 +27,8 @@ export const QuestionsTable = () => {
 
 	return (
 		<>
-		  <TableContainer sx={{ width: 650 }} component={Paper}>
-			  <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+		  <TableContainer component={Paper}>
+			  <Table size="small" aria-label="a dense table">
 				  <TableHead sx={{ backgroundColor: '#C0C0C0' }}>
 					  <TableRow>
 						  <TableCell>Question</TableCell>
