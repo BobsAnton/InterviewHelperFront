@@ -17,9 +17,29 @@ const initialState: QuestionsState = {
 };
 
 export const fetchQuestions = createAsyncThunk('questions/fetchQuestions', async () => {
-	const response = await fetch('http://localhost:8081/questions');
-	const questions = await response.json();
-	return questions;
+	return (await fetch('http://localhost:8081/questions')).json();
+});
+
+export const addNewQuestion = createAsyncThunk('questions/addNewQuestion', async (newQuestion: Question) => {
+	return (await fetch('http://localhost:8081/questions', {
+		method: 'POST',
+		headers: {
+			'Content-Type':
+				'application/json;charset=utf-8'
+		},
+		body: JSON.stringify({ ...newQuestion, technicalFieldName: newQuestion.technicalField.name })
+	})).json();
+});
+
+export const deleteQuestion = createAsyncThunk('questions/deleteQuestion', async (questionToDelete: Question) => {
+	return (await fetch('http://localhost:8081/questions', {
+		method: 'DELETE',
+		headers: {
+			'Content-Type':
+				'application/json;charset=utf-8'
+		},
+		body: JSON.stringify(questionToDelete)
+	})).json();
 });
 
 const questionsSlice = createSlice({
@@ -28,16 +48,39 @@ const questionsSlice = createSlice({
 	reducers: {},
 	extraReducers(builder) {
 		builder
+			// fetchQuestions
 			.addCase(fetchQuestions.pending, (state, action) => {
+				state.error = null;
 				state.status = 'loading';
 			})
 			.addCase(fetchQuestions.fulfilled, (state, action) => {
+				state.error = null;
 				state.status = 'succeeded';
 				state.questions = state.questions.concat(action.payload);
 			})
 			.addCase(fetchQuestions.rejected, (state, action) => {
-				state.status = 'failed';
 				state.error = action.error.message;
+				state.status = 'failed';
+			})
+			// addNewQuestion
+			.addCase(addNewQuestion.fulfilled, (state, action) => {
+				state.error = null;
+				state.status = 'succeeded';
+				state.questions.push(action.payload);
+			})
+			.addCase(addNewQuestion.rejected, (state, action) => {
+				state.error = action.error.message;
+				state.status = 'failed';
+			})
+			// deleteQuestion
+			.addCase(deleteQuestion.fulfilled, (state, action) => {
+				state.error = null;
+				state.status = 'succeeded';
+				state.questions = state.questions.filter(question => question.name !== action.payload.name)
+			})
+			.addCase(deleteQuestion.rejected, (state, action) => {
+				state.error = action.error.message;
+				state.status = 'failed';
 			});
 	}
 });

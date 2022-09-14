@@ -1,20 +1,21 @@
 import React, { useEffect } from 'react';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import { selectAllQuestions, fetchQuestions } from './questionsSlice';
+import { DeleteQuestionButton } from './DeleteQuestionButton';
 
+import Paper from '@mui/material/Paper';
 import TableContainer from '@mui/material/TableContainer';
 import Table from '@mui/material/Table';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import TableBody from '@mui/material/TableBody';
-import Paper from '@mui/material/Paper';
 
 export const QuestionsTable = () => {
 	const dispatch = useAppDispatch();
+
 	const questions = useAppSelector(selectAllQuestions);
 	const questionsStatus = useAppSelector(state => state.questions.status);
-	const orderedQuestions = questions.questions.slice().sort((a, b) => a.technicalField.name.localeCompare(b.technicalField.name));
 
 	useEffect(() => {
 		if (questionsStatus === 'idle') {
@@ -22,25 +23,29 @@ export const QuestionsTable = () => {
 		}
 	}, [questionsStatus, dispatch]);
 
+	const orderedQuestions = questions.questions.slice().sort((a, b) => a.technicalField.name.localeCompare(b.technicalField.name));
+
 	return (
 		<>
 		  <TableContainer sx={{ width: 650 }} component={Paper}>
 			  <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
-				  <TableHead>
+				  <TableHead sx={{ backgroundColor: '#C0C0C0' }}>
 					  <TableRow>
 						  <TableCell>Question</TableCell>
-						  <TableCell align="right">Technical field</TableCell>
-						  <TableCell align="right">Complexity</TableCell>
-						  <TableCell align="right">Description</TableCell>
+						  <TableCell align="center">Technical field</TableCell>
+						  <TableCell align="center">Complexity</TableCell>
+						  <TableCell align="center">Description</TableCell>
+						  <TableCell align="center"></TableCell>
 					  </TableRow>
 				  </TableHead>
 				  <TableBody>
 					  {orderedQuestions.map((question) => (
 						  <TableRow key={question.name} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
 							  <TableCell component="th" scope="row">{question.name}</TableCell>
-							  <TableCell align="right">{question.technicalField.name}</TableCell>
-							  <TableCell align="right">{question.complexity}</TableCell>
-							  <TableCell align="right">{question.description}</TableCell>
+							  <TableCell align="center">{question.technicalField.name}</TableCell>
+							  <TableCell align="center">{question.complexity}</TableCell>
+							  <TableCell align="center">{question.description}</TableCell>
+							  <TableCell align="center"><DeleteQuestionButton {...question}/></TableCell>
 						  </TableRow>
 					  ))}
 				  </TableBody>
