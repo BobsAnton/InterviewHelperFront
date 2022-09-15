@@ -4,6 +4,8 @@ import { Question } from '../../types/models/questionType';
 import { Status } from '../../types/statusType';
 import { Error } from '../../types/errorType';
 
+import { deleteTechnicalField } from '../technicalFields/technicalFieldsSlice';
+
 interface QuestionsState {
 	questions: Array<Question>;
 	status: Status;
@@ -81,6 +83,12 @@ const questionsSlice = createSlice({
 			.addCase(deleteQuestion.rejected, (state, action) => {
 				state.error = action.error.message;
 				state.status = 'failed';
+			})
+			// deleteTechnicalField
+			.addCase(deleteTechnicalField.fulfilled, (state, action) => {
+				state.error = null;
+				state.status = 'succeeded';
+				state.questions = state.questions.filter(question => question.technicalField.name !== action.payload.name)
 			});
 	}
 });
