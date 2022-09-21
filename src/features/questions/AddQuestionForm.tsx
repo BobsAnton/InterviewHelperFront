@@ -18,7 +18,7 @@ export const AddQuestionForm = () => {
 	const [name, setName] = useState('');
 	const [description, setDescription] = useState('');
 	const [complexity, setComplexity] = useState('Average');
-	const [technicalFieldName, setTechnicalFieldName] = useState('');
+	const [technicalFieldId, setTechnicalFieldId] = useState('');
 	const [addRequestStatus, setAddRequestStatus] = useState('idle');
 	
 	const error = useAppSelector(state => state.questions.error);
@@ -27,17 +27,17 @@ export const AddQuestionForm = () => {
 	const onNameChanged = (e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value);
 	const onDescriptionChanged = (e: React.ChangeEvent<HTMLInputElement>) => setDescription(e.target.value);
 	const onComplexityChanged = (e: React.ChangeEvent<HTMLSelectElement>) => setComplexity(e.target.value as string);
-	const onTechnicalFieldNameChanged = (e: React.ChangeEvent<HTMLSelectElement>) => setTechnicalFieldName(e.target.value as string);
+	const onTechnicalFieldIdChanged = (e: React.ChangeEvent<HTMLSelectElement>) => setTechnicalFieldId(e.target.value as string);
 	const onSaveQuestionClicked = async () => {
 		try {
 			setAddRequestStatus('pending');
 
-			await dispatch(addNewQuestion({ name, description, complexity, technicalField: { name: technicalFieldName, order: 0 }}));
+			await dispatch(addNewQuestion({ id: '', name, description, complexity, technicalField: { id: technicalFieldId, name: '', order: 0 }}));
 			
 			setName('');
 			setDescription('');
 			setComplexity('');
-			setTechnicalFieldName('');
+			setTechnicalFieldId('');
 		}
 		catch(err) {
 			console.error('Failed to save the question: ', err);
@@ -46,7 +46,7 @@ export const AddQuestionForm = () => {
 		}
 	};
 
-	const canSave = [name, description, complexity, technicalFieldName].every(Boolean) && addRequestStatus === 'idle';
+	const canSave = [name, description, complexity, technicalFieldId].every(Boolean) && addRequestStatus === 'idle';
 
 	return (
 		<Paper sx={{ marginTop: 1, padding: 1 }}>
@@ -56,9 +56,9 @@ export const AddQuestionForm = () => {
 
 				<TextField sx={{ marginTop: 1 }} variant="standard" label="Description" multiline maxRows={4} value={description} onChange={onDescriptionChanged}/>
 				
-				<NativeSelect sx={{ marginTop: 1 }} value={technicalFieldName} onChange={onTechnicalFieldNameChanged}>
+				<NativeSelect sx={{ marginTop: 1 }} value={technicalFieldId} onChange={onTechnicalFieldIdChanged}>
 					{ technicalFields.technicalFields.map((technicalField) => (
-						<option value={technicalField.name}>{ technicalField.name }</option>
+						<option value={technicalField.id}>{ technicalField.name }</option>
 					)) }
 				</NativeSelect>
 				

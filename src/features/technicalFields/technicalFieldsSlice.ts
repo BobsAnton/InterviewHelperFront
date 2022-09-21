@@ -32,7 +32,7 @@ export const addNewTechnicalField = createAsyncThunk('technicalFields/addNewTech
 });
 
 export const deleteTechnicalField = createAsyncThunk('questions/deleteTechnicalField', async (technicalFieldToDelete: TechnicalField) => {
-	return (await fetch('http://localhost:8081/technical-fields', {
+	return (await fetch(`http://localhost:8081/technical-fields/${technicalFieldToDelete.id}`, {
 		method: 'DELETE',
 		headers: {
 			'Content-Type':
@@ -76,7 +76,7 @@ const technicalFieldsSlice = createSlice({
 			.addCase(deleteTechnicalField.fulfilled, (state, action) => {
 				state.error = null;
 				state.status = 'succeeded';
-				state.technicalFields = state.technicalFields.filter(technicalField => technicalField.name !== action.payload.name)
+				state.technicalFields = state.technicalFields.filter(technicalField => technicalField.id !== action.payload.id)
 			})
 			.addCase(deleteTechnicalField.rejected, (state, action) => {
 				state.error = action.error.message;

@@ -29,12 +29,12 @@ export const addNewQuestion = createAsyncThunk('questions/addNewQuestion', async
 			'Content-Type':
 				'application/json;charset=utf-8'
 		},
-		body: JSON.stringify({ ...newQuestion, technicalFieldName: newQuestion.technicalField.name })
+		body: JSON.stringify(newQuestion)
 	})).json();
 });
 
 export const deleteQuestion = createAsyncThunk('questions/deleteQuestion', async (questionToDelete: Question) => {
-	return (await fetch('http://localhost:8081/questions', {
+	return (await fetch(`http://localhost:8081/questions/${questionToDelete.id}`, {
 		method: 'DELETE',
 		headers: {
 			'Content-Type':
@@ -78,7 +78,7 @@ const questionsSlice = createSlice({
 			.addCase(deleteQuestion.fulfilled, (state, action) => {
 				state.error = null;
 				state.status = 'succeeded';
-				state.questions = state.questions.filter(question => question.name !== action.payload.name)
+				state.questions = state.questions.filter(question => question.id !== action.payload.id)
 			})
 			.addCase(deleteQuestion.rejected, (state, action) => {
 				state.error = action.error.message;
@@ -88,7 +88,7 @@ const questionsSlice = createSlice({
 			.addCase(deleteTechnicalField.fulfilled, (state, action) => {
 				state.error = null;
 				state.status = 'succeeded';
-				state.questions = state.questions.filter(question => question.technicalField.name !== action.payload.name)
+				state.questions = state.questions.filter(question => question.technicalField.id !== action.payload.id)
 			});
 	}
 });

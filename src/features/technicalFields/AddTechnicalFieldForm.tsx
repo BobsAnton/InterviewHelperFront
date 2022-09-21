@@ -24,7 +24,7 @@ export const AddTechnicalFieldForm = () => {
 		try {
 			setAddRequestStatus('pending');
 
-			await dispatch(addNewTechnicalField({ name, order: Number(order) }));
+			await dispatch(addNewTechnicalField({ id: '', name, order: Number(order) }));
 			
 			setName('');
 			setOrder('');

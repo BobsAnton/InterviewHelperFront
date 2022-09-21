@@ -34,7 +34,7 @@ export const DeleteTechnicalFieldButton = (technicalField: TechnicalField) => {
 	const handleCloseDeleteDialog = () => { setOpenDeleteDialog(false);	};
 
 	const canSave = addRequestStatus === 'idle';
-	const questionsNumber = questions.questions.filter(x => x.technicalField.name === technicalField.name).length;
+	const questionsNumber = questions.questions.filter(x => x.technicalField.id === technicalField.id).length;
 
 	return (
 		<>
