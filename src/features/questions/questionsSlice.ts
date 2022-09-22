@@ -75,6 +75,10 @@ const questionsSlice = createSlice({
 				state.status = 'failed';
 			})
 			// deleteQuestion
+			.addCase(deleteQuestion.pending, (state, action) => {
+				state.error = null;
+				state.status = 'loading';
+			})
 			.addCase(deleteQuestion.fulfilled, (state, action) => {
 				state.error = null;
 				state.status = 'succeeded';

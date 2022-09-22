@@ -31,7 +31,7 @@ export const addNewTechnicalField = createAsyncThunk('technicalFields/addNewTech
 	})).json();
 });
 
-export const deleteTechnicalField = createAsyncThunk('questions/deleteTechnicalField', async (technicalFieldToDelete: TechnicalField) => {
+export const deleteTechnicalField = createAsyncThunk('technicalFields/deleteTechnicalField', async (technicalFieldToDelete: TechnicalField) => {
 	return (await fetch(`http://localhost:8081/technical-fields/${technicalFieldToDelete.id}`, {
 		method: 'DELETE',
 		headers: {
@@ -73,6 +73,10 @@ const technicalFieldsSlice = createSlice({
 				state.status = 'failed';
 			})
 			// deleteTechnicalField
+			.addCase(deleteTechnicalField.pending, (state, action) => {
+				state.error = null;
+				state.status = 'loading';
+			})
 			.addCase(deleteTechnicalField.fulfilled, (state, action) => {
 				state.error = null;
 				state.status = 'succeeded';

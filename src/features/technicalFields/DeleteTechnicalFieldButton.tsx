@@ -14,26 +14,19 @@ export const DeleteTechnicalFieldButton = (technicalField: TechnicalField) => {
 	const dispatch = useAppDispatch();
 
 	const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
-	const [addRequestStatus, setAddRequestStatus] = useState('idle');
 
 	const questions = useAppSelector(selectAllQuestions);
+	const status = useAppSelector(state => state.technicalFields.status);
 
 	const onDeleteTechnicalFieldClicked = async () => {
-		try {
-			setAddRequestStatus('pending');
-			await dispatch(deleteTechnicalField(technicalField));
-		}
-		catch(err) {
-			console.error('Failed to remove the technicalField: ', err);
-		} finally {
-			setAddRequestStatus('idle');
-		}
+		setOpenDeleteDialog(false);
+		await dispatch(deleteTechnicalField(technicalField));
 	};
 
 	const handleOpenDeleteDialog = () => {	setOpenDeleteDialog(true); };
 	const handleCloseDeleteDialog = () => { setOpenDeleteDialog(false);	};
 
-	const canSave = addRequestStatus === 'idle';
+	const canSave = status !== 'loading';
 	const questionsNumber = questions.questions.filter(x => x.technicalField.id === technicalField.id).length;
 
 	return (

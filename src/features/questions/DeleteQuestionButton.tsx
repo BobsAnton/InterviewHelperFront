@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useAppDispatch } from '../../app/hooks';
+import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import { deleteQuestion } from './questionsSlice';
 import { Question } from "../../types/models/questionType";
 
@@ -13,24 +13,18 @@ export const DeleteQuestionButton = (question: Question) => {
 	const dispatch = useAppDispatch();
 
 	const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
-	const [addRequestStatus, setAddRequestStatus] = useState('idle');
+
+	const status = useAppSelector(state => state.questions.status);
 
 	const onDeleteQuestionClicked = async () => {
-		try {
-			setAddRequestStatus('pending');
-			await dispatch(deleteQuestion(question));
-		}
-		catch(err) {
-			console.error('Failed to remove the question: ', err);
-		} finally {
-			setAddRequestStatus('idle');
-		}
+		setOpenDeleteDialog(false);
+		await dispatch(deleteQuestion(question));
 	};
 
 	const handleOpenDeleteDialog = () => {	setOpenDeleteDialog(true); };
 	const handleCloseDeleteDialog = () => { setOpenDeleteDialog(false);	};
 
-	const canSave = addRequestStatus === 'idle';
+	const canSave = status !== 'loading';
 
 	return (
 		<>
