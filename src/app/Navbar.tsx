@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from "react-router-dom";
 
 import AppBar from '@mui/material/AppBar';
 import Tabs from '@mui/material/Tabs';
@@ -15,10 +16,10 @@ export const Navbar = () => {
           <PeopleAlt />
         </Typography>
         <Tabs variant="scrollable" scrollButtons="auto">
-          <Tab label="Вопросы и области" sx={{ color: "white" }}/>
-          <Tab label="Кандидаты" sx={{ color: "white" }}/>
-          <Tab label="Интервью" sx={{ color: "white" }}/>
-          <Tab label="Новое Интервью" sx={{ color: "white" }}/>
+          <Tab label="Вопросы и области" sx={{ color: "white" }} component={Link} to={'/questions'} />
+          <Tab label="Кандидаты" sx={{ color: "white" }} component={Link} to={'/candidates'}/>
+          <Tab label="Интервью" sx={{ color: "white" }} component={Link} to={'/interviews'}/>
+          <Tab label="Новое Интервью" sx={{ color: "white" }} component={Link} to={'/new-interview'}/>
         </Tabs>
       </Toolbar>
     </AppBar>
