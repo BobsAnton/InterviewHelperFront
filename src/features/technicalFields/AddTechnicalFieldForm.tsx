@@ -14,29 +14,20 @@ export const AddTechnicalFieldForm = () => {
 
 	const [name, setName] = useState('');
 	const [order, setOrder] = useState('');
-	const [addRequestStatus, setAddRequestStatus] = useState('idle');
 
 	const error = useAppSelector(state => state.technicalFields.error);
+	const status = useAppSelector(state => state.technicalFields.status);
 
 	const onNameChanged = (e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value);
 	const onOrderChanged = (e: React.ChangeEvent<HTMLInputElement>) => setOrder(e.target.value);
 	const onSaveTechnicalFieldClicked = async () => {
-		try {
-			setAddRequestStatus('pending');
-
-			await dispatch(addNewTechnicalField({ id: '', name, order: Number(order) }));
+		await dispatch(addNewTechnicalField({ id: '', name, order: Number(order) }));
 			
-			setName('');
-			setOrder('');
-		}
-		catch(err) {
-			console.error('Failed to save the technicalField: ', err);
-		} finally {
-			setAddRequestStatus('idle');
-		}
+		setName('');
+		setOrder('');
 	};
 
-	const canSave = [name, order].every(Boolean) && addRequestStatus === 'idle';
+	const canSave = [name, order].every(Boolean) && status !== 'loading';
 
 	return (
 		<Paper sx={{ marginTop: 1, padding: 1 }}>

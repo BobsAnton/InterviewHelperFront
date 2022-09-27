@@ -1,8 +1,4 @@
-import { CandidateTechnicalField } from './candidateTechnicalFieldType';
-import { Interview } from './interviewType';
-
 export interface Candidate {
+	id: string;
 	name: string;
-	skills: CandidateTechnicalField[];
-	interviews: Interview[];
 };

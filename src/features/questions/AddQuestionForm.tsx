@@ -19,9 +19,9 @@ export const AddQuestionForm = () => {
 	const [description, setDescription] = useState('');
 	const [complexity, setComplexity] = useState('Average');
 	const [technicalFieldId, setTechnicalFieldId] = useState('');
-	const [addRequestStatus, setAddRequestStatus] = useState('idle');
 	
 	const error = useAppSelector(state => state.questions.error);
+	const status = useAppSelector(state => state.questions.status);
 	const technicalFields = useAppSelector(selectAllTechnicalFields);
 
 	const onNameChanged = (e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value);
@@ -29,32 +29,21 @@ export const AddQuestionForm = () => {
 	const onComplexityChanged = (e: React.ChangeEvent<HTMLSelectElement>) => setComplexity(e.target.value as string);
 	const onTechnicalFieldIdChanged = (e: React.ChangeEvent<HTMLSelectElement>) => setTechnicalFieldId(e.target.value as string);
 	const onSaveQuestionClicked = async () => {
-		try {
-			setAddRequestStatus('pending');
-
-			await dispatch(addNewQuestion({ id: '', name, description, complexity, technicalField: { id: technicalFieldId, name: '', order: 0 }}));
+		await dispatch(addNewQuestion({ id: '', name, description, complexity, technicalField: technicalFields.technicalFields.find(x => x.id === technicalFieldId)}));
 			
-			setName('');
-			setDescription('');
-			setComplexity('');
-			setTechnicalFieldId('');
-		}
-		catch(err) {
-			console.error('Failed to save the question: ', err);
-		} finally {
-			setAddRequestStatus('idle');
-		}
+		setName('');
+		setDescription('');
+		setComplexity('');
+		setTechnicalFieldId('');
 	};
 
-	const canSave = [name, description, complexity, technicalFieldId].every(Boolean) && addRequestStatus === 'idle';
+	const canSave = [name, description, complexity, technicalFieldId].every(Boolean) && status !== 'loading';
 
 	return (
 		<Paper sx={{ marginTop: 1, padding: 1 }}>
 			{ (error !== null) ? (<Alert severity="error"><AlertTitle>Error</AlertTitle>{error}</Alert>) : (<></>) }
 			<FormGroup sx={{ marginTop: 3}}>
 				<Input placeholder="Name" value={name} onChange={onNameChanged} />
-
-				<TextField sx={{ marginTop: 1 }} variant="standard" label="Description" multiline maxRows={4} value={description} onChange={onDescriptionChanged}/>
 				
 				<NativeSelect sx={{ marginTop: 1 }} value={technicalFieldId} onChange={onTechnicalFieldIdChanged}>
 					{ technicalFields.technicalFields.map((technicalField) => (
@@ -70,6 +59,8 @@ export const AddQuestionForm = () => {
 					<option value={'High'}>High</option>
 					<option value={'VeryHigh'}>Very high</option>
 				</NativeSelect>
+
+				<TextField sx={{ marginTop: 1 }} variant="standard" label="Description" multiline maxRows={4} value={description} onChange={onDescriptionChanged}/>
 				
 				<Button sx={{ marginTop: 3 }} variant="contained" onClick={onSaveQuestionClicked} disabled={!canSave}>Add Question</Button>
 			</FormGroup>

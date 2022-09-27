@@ -63,6 +63,10 @@ const technicalFieldsSlice = createSlice({
 				state.status = 'failed';
 			})
 			// addNewTechnicalField
+			.addCase(addNewTechnicalField.pending, (state, action) => {
+				state.error = null;
+				state.status = 'loading';
+			})
 			.addCase(addNewTechnicalField.fulfilled, (state, action) => {
 				state.error = null;
 				state.status = 'succeeded';

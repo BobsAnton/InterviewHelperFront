@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
-import { deleteTechnicalField } from './technicalFieldsSlice';
-import { selectAllQuestions } from '../questions/questionsSlice';
+import { deleteCandidate } from './candidatesSlice';
+import { Candidate } from "../../types/models/candidateType";
+import { selectAllInterviews } from '../interviews/interviewsSlice';
 import { selectAllInterviewQuestions } from '../interviewQuestions/interviewQuestionsSlice';
 import { selectAllCandidateTechnicalFields } from '../candidateTechnicalFields/candidateTechnicalFieldsSlice';
-import { TechnicalField } from "../../types/models/technicalFieldType";
 
 import Button from '@mui/material/Button';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -12,31 +12,31 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogTitle from '@mui/material/DialogTitle';
 
-export const DeleteTechnicalFieldButton = (technicalField: TechnicalField) => {
+export const DeleteCandidateButton = (candidate: Candidate) => {
 	const dispatch = useAppDispatch();
 
 	const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
 
-	const questions = useAppSelector(selectAllQuestions);
+	const interviews = useAppSelector(selectAllInterviews);
 	const interviewQuestions = useAppSelector(selectAllInterviewQuestions);
 	const candidateTechnicalFields = useAppSelector(selectAllCandidateTechnicalFields);
-	const status = useAppSelector(state => state.technicalFields.status);
+	const status = useAppSelector(state => state.candidates.status);
 
-	const onDeleteTechnicalFieldClicked = async () => {
+	const onDeleteCandidateClicked = async () => {
 		setOpenDeleteDialog(false);
-		await dispatch(deleteTechnicalField(technicalField));
+		await dispatch(deleteCandidate(candidate));
 	};
 
 	const handleOpenDeleteDialog = () => {	setOpenDeleteDialog(true); };
 	const handleCloseDeleteDialog = () => { setOpenDeleteDialog(false);	};
 
 	const canSave = status !== 'loading';
-	const questionsNumber = questions.questions.filter(x => x.technicalField.id === technicalField.id).length;
-	const candidateTechnicalFieldsNumber = candidateTechnicalFields.candidateTechnicalFields.filter(x => x.technicalField.id === technicalField.id).length;
+	const interviewsNumber = interviews.interviews.filter(x => x.candidate.id === candidate.id).length;
+	const candidateTechnicalFieldsNumber = candidateTechnicalFields.candidateTechnicalFields.filter(x => x.candidate.id === candidate.id).length;
 
 	let interviewQuestionsNumber = 0;
-	questions.questions.filter(x => x.technicalField.id === technicalField.id).forEach(question => {
-		interviewQuestionsNumber += interviewQuestions.interviewQuestions.filter(x => x.question.id === question.id).length;
+	interviews.interviews.filter(x => x.candidate.id === candidate.id).forEach(interview => {
+		interviewQuestionsNumber += interviewQuestions.interviewQuestions.filter(x => x.interview.id === interview.id).length;
 	});
 
 	return (
@@ -46,17 +46,16 @@ export const DeleteTechnicalFieldButton = (technicalField: TechnicalField) => {
 			</Button>
 			<Dialog open={openDeleteDialog} onClose={handleCloseDeleteDialog} aria-labelledby="alert-dialog-title">
 				<DialogTitle id="alert-dialog-title">
-					Delete this technical field: "{technicalField.name}"?<br/>
+					Delete this candidate: "{candidate.name}"?<br/>
 					{ candidateTechnicalFieldsNumber !== 0  && <> (+ {candidateTechnicalFieldsNumber} candidate skills)<br/></>}
 					{ interviewQuestionsNumber !== 0  && <> (+ {interviewQuestionsNumber} interview questions)<br/></>}
-					{ questionsNumber !== 0  && <> (+ {questionsNumber} questions)</>}
+					{ interviewsNumber !== 0  && <> (+ {interviewsNumber} interviews)</>}
 				</DialogTitle>
 				<DialogActions>
 					<Button onClick={handleCloseDeleteDialog}>Cancel</Button>
-					<Button onClick={onDeleteTechnicalFieldClicked} autoFocus>Delete</Button>
+					<Button onClick={onDeleteCandidateClicked} autoFocus>Delete</Button>
 				</DialogActions>
 			</Dialog>
 		</>
-
 	);
 };

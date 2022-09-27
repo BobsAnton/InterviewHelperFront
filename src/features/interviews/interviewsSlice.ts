@@ -1,8 +1,10 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
 import { Interview } from '../../types/models/interviewType';
 import { Status } from '../../types/statusType';
 import { Error } from '../../types/errorType';
+
+import { deleteCandidate } from '../candidates/candidatesSlice';
 
 interface InterviewsState {
 	interviews: Array<Interview>;
@@ -16,10 +18,87 @@ const initialState: InterviewsState = {
 	error: null
 };
 
+export const fetchInterviews = createAsyncThunk('interviews/fetchInterviews', async () => {
+	return (await fetch('http://localhost:8081/interviews')).json();
+});
+
+export const addNewInterview = createAsyncThunk('interviews/addNewInterview', async (newInterview: Interview) => {
+	return (await fetch('http://localhost:8081/interviews', {
+		method: 'POST',
+		headers: {
+			'Content-Type':
+				'application/json;charset=utf-8'
+		},
+		body: JSON.stringify(newInterview)
+	})).json();
+});
+
+export const deleteInterview = createAsyncThunk('interviews/deleteInterview', async (interviewToDelete: Interview) => {
+	return (await fetch(`http://localhost:8081/interviews/${interviewToDelete.id}`, {
+		method: 'DELETE',
+		headers: {
+			'Content-Type':
+				'application/json;charset=utf-8'
+		},
+		body: JSON.stringify(interviewToDelete)
+	})).json();
+});
+
 const interviewsSlice = createSlice({
 	name: "interviews",
 	initialState: initialState,
-	reducers: {}
+	reducers: {},
+	extraReducers(builder) {
+		builder
+			// fetchInterviews
+			.addCase(fetchInterviews.pending, (state, action) => {
+				state.error = null;
+				state.status = 'loading';
+			})
+			.addCase(fetchInterviews.fulfilled, (state, action) => {
+				state.error = null;
+				state.status = 'succeeded';
+				state.interviews = state.interviews.concat(action.payload);
+			})
+			.addCase(fetchInterviews.rejected, (state, action) => {
+				state.error = action.error.message;
+				state.status = 'failed';
+			})
+			// addNewInterview
+			.addCase(addNewInterview.pending, (state, action) => {
+				state.error = null;
+				state.status = 'loading';
+			})
+			.addCase(addNewInterview.fulfilled, (state, action) => {
+				state.error = null;
+				state.status = 'succeeded';
+				state.interviews.push(action.payload);
+			})
+			.addCase(addNewInterview.rejected, (state, action) => {
+				state.error = action.error.message;
+				state.status = 'failed';
+			})
+			// deleteInterview
+			.addCase(deleteInterview.pending, (state, action) => {
+				state.error = null;
+				state.status = 'loading';
+			})
+			.addCase(deleteInterview.fulfilled, (state, action) => {
+				state.error = null;
+				state.status = 'succeeded';
+				state.interviews = state.interviews.filter(interview => interview.id !== action.payload.id)
+			})
+			.addCase(deleteInterview.rejected, (state, action) => {
+				state.error = action.error.message;
+				state.status = 'failed';
+			})
+			// deleteCandidate
+			.addCase(deleteCandidate.fulfilled, (state, action) => {
+				state.error = null;
+				state.status = 'succeeded';
+				state.interviews = state.interviews.filter(interview => interview.candidate.id !== action.payload.id)
+			});
+	}
 });
 
 export const selectAllInterviews = (state: RootState) => state.interviews;
