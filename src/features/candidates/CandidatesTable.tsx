@@ -1,9 +1,11 @@
 import React, { useEffect } from 'react';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import { selectAllCandidates, fetchCandidates } from './candidatesSlice';
-import { selectAllCandidateTechnicalFields } from '../candidateTechnicalFields/candidateTechnicalFieldsSlice';
-import { selectAllInterviews } from '../interviews/interviewsSlice';
+import { selectAllCandidateTechnicalFields, fetchCandidateTechnicalFields } from '../candidateTechnicalFields/candidateTechnicalFieldsSlice';
+import { selectAllInterviews, fetchInterviews } from '../interviews/interviewsSlice';
 import { DeleteCandidateButton } from './DeleteCandidateButton';
+
+import { interviewDateToString } from '../../types/models/interviewType';
 
 import Paper from '@mui/material/Paper';
 import TableContainer from '@mui/material/TableContainer';
@@ -23,6 +25,8 @@ export const CandidatesTable = () => {
 
 	useEffect(() => {
 		if (status === 'idle') {
+			//dispatch(fetchCandidateTechnicalFields());
+			dispatch(fetchInterviews());
 			dispatch(fetchCandidates());
 		}
 	}, [status, dispatch]);
@@ -45,8 +49,8 @@ export const CandidatesTable = () => {
 					  {orderedCandidates.map((candidate) => (
 						  <TableRow key={candidate.name} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
 							  <TableCell component="th" scope="row">{candidate.name}</TableCell>
-							  <TableCell align="center">{candidateTechnicalFields.candidateTechnicalFields.filter(candidateTechnicalField => candidateTechnicalField.candidate.id === candidate.id).length}</TableCell>
-							  <TableCell align="center">{interviews.interviews.filter(interview => interview.candidate.id === candidate.id).length}</TableCell>
+							  <TableCell align="center">{candidateTechnicalFields.candidateTechnicalFields.filter(candidateTechnicalField => candidateTechnicalField.candidate.id === candidate.id).map(candidateTechnicalField => candidateTechnicalField.technicalField.name).join(', ')}</TableCell>
+							  <TableCell align="center">{interviews.interviews.filter(interview => interview.candidate.id === candidate.id).sort((a, b) => new Date(a.date).valueOf() - new Date(b.date).valueOf()).map(interview => interviewDateToString(interview)).join(', ')}</TableCell>
 							  <TableCell align="center"><DeleteCandidateButton {...candidate}/></TableCell>
 						  </TableRow>
 					  ))}

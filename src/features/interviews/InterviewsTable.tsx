@@ -3,6 +3,8 @@ import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import { selectAllInterviews, fetchInterviews } from './interviewsSlice';
 import { DeleteInterviewButton } from './DeleteInterviewButton';
 
+import { interviewDateToString } from '../../types/models/interviewType';
+
 import Paper from '@mui/material/Paper';
 import TableContainer from '@mui/material/TableContainer';
 import Table from '@mui/material/Table';
@@ -42,7 +44,7 @@ export const InterviewsTable = () => {
 					  {orderedInterviews.map((interview) => (
 						  <TableRow key={interview.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
 							  <TableCell component="th" scope="row">{interview.candidate.name}</TableCell>
-							  <TableCell align="center">{interview.date.toString()}</TableCell>
+							  <TableCell align="center">{interviewDateToString(interview)}</TableCell>
 							  <TableCell align="center">{interview.status}</TableCell>
 							  <TableCell align="center">{interview.review}</TableCell>
 							  <TableCell align="center"><DeleteInterviewButton {...interview}/></TableCell>

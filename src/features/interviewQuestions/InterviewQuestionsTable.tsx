@@ -3,6 +3,8 @@ import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import { selectAllInterviewQuestions, fetchInterviewQuestions } from './interviewQuestionsSlice';
 import { DeleteInterviewQuestionButton } from './DeleteInterviewQuestionButton';
 
+import { interviewDateToString } from '../../types/models/interviewType';
+
 import Paper from '@mui/material/Paper';
 import TableContainer from '@mui/material/TableContainer';
 import Table from '@mui/material/Table';
@@ -41,7 +43,7 @@ export const InterviewQuestionsTable = () => {
 				  <TableBody>
 					  {orderedInterviewQuestions.map((interviewQuestion) => (
 						  <TableRow key={interviewQuestion.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-							  <TableCell component="th" scope="row">{interviewQuestion.interview.candidate.name + ' ' + interviewQuestion.interview.date}</TableCell>
+							  <TableCell component="th" scope="row">{interviewQuestion.interview.candidate.name + interviewDateToString(interviewQuestion.interview)}</TableCell>
 							  <TableCell align="center">{interviewQuestion.question.name}</TableCell>
 							  <TableCell align="center">{interviewQuestion.grade}</TableCell>
 							  <TableCell align="center">{interviewQuestion.comment}</TableCell>

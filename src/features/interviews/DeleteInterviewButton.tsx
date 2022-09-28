@@ -4,6 +4,8 @@ import { deleteInterview } from './interviewsSlice';
 import { Interview } from "../../types/models/interviewType";
 import { selectAllInterviewQuestions } from '../interviewQuestions/interviewQuestionsSlice';
 
+import { interviewDateToString } from '../../types/models/interviewType';
+
 import Button from '@mui/material/Button';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Dialog from '@mui/material/Dialog';
@@ -36,7 +38,7 @@ export const DeleteInterviewButton = (interview: Interview) => {
 			</Button>
 			<Dialog open={openDeleteDialog} onClose={handleCloseDeleteDialog} aria-labelledby="alert-dialog-title">
 				<DialogTitle id="alert-dialog-title">
-					Delete this interview: "{interview.candidate.name + ' ' + interview.date}"?<br/>
+					Delete this interview: "{interview.candidate.name + ' ' + interviewDateToString(interview)}"?<br/>
 					{ interviewQuestionsNumber !== 0  && <> (+ {interviewQuestionsNumber} interview questions)</>}
 				</DialogTitle>
 				<DialogActions>

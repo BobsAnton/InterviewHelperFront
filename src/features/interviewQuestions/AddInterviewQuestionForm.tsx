@@ -4,6 +4,8 @@ import { addNewInterviewQuestion } from './interviewQuestionsSlice';
 import { selectAllInterviews } from '../interviews/interviewsSlice';
 import { selectAllQuestions } from '../questions/questionsSlice';
 
+import { interviewDateToString } from '../../types/models/interviewType';
+
 import Paper from '@mui/material/Paper';
 import FormGroup from '@mui/material/FormGroup';
 import Input from '@mui/material/Input';
@@ -47,7 +49,7 @@ export const AddInterviewQuestionForm = () => {
 			<FormGroup sx={{ marginTop: 3}}>
 				<NativeSelect value={interviewId} onChange={onInterviewIdChanged}>
 					{ interviews.interviews.map((interview) => (
-						<option value={interview.id}>{ interview.candidate.name + ' ' + interview.date }</option>
+						<option value={interview.id}>{ interview.candidate.name + ' ' + interviewDateToString(interview) }</option>
 					)) }
 				</NativeSelect>
 				
