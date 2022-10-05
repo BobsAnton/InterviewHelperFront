@@ -1,4 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
+import { reducer as formReducer } from 'redux-form';
 
 import candidateTechnicalFieldsReducer from '../features/candidateTechnicalFields/candidateTechnicalFieldsSlice';
 import candidatesReducer from '../features/candidates/candidatesSlice';
@@ -9,6 +10,7 @@ import technicalFieldsReducer from '../features/technicalFields/technicalFieldsS
 
 const store = configureStore({
 	reducer: {
+		form: formReducer,
 		candidates: candidatesReducer,
 		candidateTechnicalFields: candidateTechnicalFieldsReducer,
 		interviewQuestions: interviewQuestionsReducer,
