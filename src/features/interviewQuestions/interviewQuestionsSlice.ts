@@ -34,6 +34,17 @@ export const addNewInterviewQuestion = createAsyncThunk('interviewQuestions/addN
 	})).json();
 });
 
+export const updateInterviewQuestion = createAsyncThunk('interviewQuestions/updateInterviewQuestion', async (interviewQuestionToUpdate: InterviewQuestion) => {
+	return (await fetch(`http://localhost:8081/interview-questions/${interviewQuestionToUpdate.id}`, {
+		method: 'PUT',
+		headers: {
+			'Content-Type':
+				'application/json;charset=utf-8'
+		},
+		body: JSON.stringify(interviewQuestionToUpdate)
+	})).json();
+});
+
 export const deleteInterviewQuestion = createAsyncThunk('interviewQuestions/deleteInterviewQuestion', async (interviewQuestionToDelete: InterviewQuestion) => {
 	return (await fetch(`http://localhost:8081/interview-questions/${interviewQuestionToDelete.id}`, {
 		method: 'DELETE',
@@ -59,7 +70,7 @@ const interviewQuestionsSlice = createSlice({
 			.addCase(fetchInterviewQuestions.fulfilled, (state, action) => {
 				state.error = null;
 				state.status = 'succeeded';
-				state.interviewQuestions = state.interviewQuestions.concat(action.payload);
+				state.interviewQuestions = action.payload;
 			})
 			.addCase(fetchInterviewQuestions.rejected, (state, action) => {
 				state.error = action.error.message;
@@ -76,6 +87,24 @@ const interviewQuestionsSlice = createSlice({
 				state.interviewQuestions.push(action.payload);
 			})
 			.addCase(addNewInterviewQuestion.rejected, (state, action) => {
+				state.error = action.error.message;
+				state.status = 'failed';
+			})
+			// updateInterviewQuestion
+			.addCase(updateInterviewQuestion.pending, (state, action) => {
+				state.error = null;
+				state.status = 'loading';
+			})
+			.addCase(updateInterviewQuestion.fulfilled, (state, action) => {
+				state.error = null;
+				state.status = 'succeeded';
+				let i = state.interviewQuestions.findIndex((x => x.id == action.payload.id));
+				state.interviewQuestions[i].interview = action.payload.interview;
+				state.interviewQuestions[i].question = action.payload.question;
+				state.interviewQuestions[i].grade = action.payload.grade;
+				state.interviewQuestions[i].comment = action.payload.comment;
+			})
+			.addCase(updateInterviewQuestion.rejected, (state, action) => {
 				state.error = action.error.message;
 				state.status = 'failed';
 			})

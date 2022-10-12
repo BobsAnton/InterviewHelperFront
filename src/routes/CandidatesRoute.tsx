@@ -6,7 +6,7 @@ import { selectAllTechnicalFields } from '../features/technicalFields/technicalF
 
 import { addNewCandidate, selectAllCandidates } from '../features/candidates/candidatesSlice';
 import { CandidatesTable } from '../features/candidates/CandidatesTable';
-import AddCandidateForm from '../features/candidates/AddCandidateForm';
+import CandidateForm from '../features/candidates/CandidateForm';
 
 import { addNewCandidateTechnicalField } from '../features/candidateTechnicalFields/candidateTechnicalFieldsSlice';
 import { CandidateTechnicalFieldsTable } from '../features/candidateTechnicalFields/CandidateTechnicalFieldsTable';
@@ -21,7 +21,7 @@ export const CandidatesRoute = () => {
 
 	const onSubmitAddNewCandidate = async (values: any) => {
 		await dispatch(addNewCandidate({ id: '', name: values.name }));
-		dispatch(reset('AddCandidateForm'));
+		dispatch(reset('CandidateForm'));
 	};
 
 	const onSubmitAddNewCandidateTechnicalField = async (values: any) => {
@@ -33,7 +33,7 @@ export const CandidatesRoute = () => {
 		<Grid container>
 			<Grid item xs={8} sx={{ padding: 1 }}>
 				<CandidatesTable/>
-              	<AddCandidateForm onSubmit={onSubmitAddNewCandidate}/>
+              	<CandidateForm onSubmit={onSubmitAddNewCandidate}/>
 			</Grid>
 			<Grid item xs={4} sx={{ padding: 1 }}>
 				<CandidateTechnicalFieldsTable/>

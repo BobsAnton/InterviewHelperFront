@@ -31,6 +31,17 @@ export const addNewTechnicalField = createAsyncThunk('technicalFields/addNewTech
 	})).json();
 });
 
+export const updateTechnicalField = createAsyncThunk('technicalFields/updateTechnicalField', async (technicalFieldToUpdate: TechnicalField) => {
+	return (await fetch(`http://localhost:8081/technical-fields/${technicalFieldToUpdate.id}`, {
+		method: 'PUT',
+		headers: {
+			'Content-Type':
+				'application/json;charset=utf-8'
+		},
+		body: JSON.stringify(technicalFieldToUpdate)
+	})).json();
+});
+
 export const deleteTechnicalField = createAsyncThunk('technicalFields/deleteTechnicalField', async (technicalFieldToDelete: TechnicalField) => {
 	return (await fetch(`http://localhost:8081/technical-fields/${technicalFieldToDelete.id}`, {
 		method: 'DELETE',
@@ -56,7 +67,7 @@ const technicalFieldsSlice = createSlice({
 			.addCase(fetchTechnicalFields.fulfilled, (state, action) => {
 				state.error = null;
 				state.status = 'succeeded';
-				state.technicalFields = state.technicalFields.concat(action.payload);
+				state.technicalFields = action.payload;
 			})
 			.addCase(fetchTechnicalFields.rejected, (state, action) => {
 				state.error = action.error.message;
@@ -73,6 +84,22 @@ const technicalFieldsSlice = createSlice({
 				state.technicalFields.push(action.payload);
 			})
 			.addCase(addNewTechnicalField.rejected, (state, action) => {
+				state.error = action.error.message;
+				state.status = 'failed';
+			})
+			// updateTechnicalField
+			.addCase(updateTechnicalField.pending, (state, action) => {
+				state.error = null;
+				state.status = 'loading';
+			})
+			.addCase(updateTechnicalField.fulfilled, (state, action) => {
+				state.error = null;
+				state.status = 'succeeded';
+				let i = state.technicalFields.findIndex((x => x.id == action.payload.id));
+				state.technicalFields[i].name = action.payload.name;
+				state.technicalFields[i].order = action.payload.order;
+			})
+			.addCase(updateTechnicalField.rejected, (state, action) => {
 				state.error = action.error.message;
 				state.status = 'failed';
 			})

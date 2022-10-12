@@ -59,7 +59,7 @@ const candidateTechnicalFieldsSlice = createSlice({
 			.addCase(fetchCandidateTechnicalFields.fulfilled, (state, action) => {
 				state.error = null;
 				state.status = 'succeeded';
-				state.candidateTechnicalFields = state.candidateTechnicalFields.concat(action.payload);
+				state.candidateTechnicalFields = action.payload;
 			})
 			.addCase(fetchCandidateTechnicalFields.rejected, (state, action) => {
 				state.error = action.error.message;

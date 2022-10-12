@@ -1,4 +1,6 @@
 import React, { useEffect } from 'react';
+import { Link } from "react-router-dom";
+
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import { selectAllInterviewQuestions, fetchInterviewQuestions } from './interviewQuestionsSlice';
 import { DeleteInterviewQuestionButton } from './DeleteInterviewQuestionButton';
@@ -43,7 +45,7 @@ export const InterviewQuestionsTable = () => {
 				  <TableBody>
 					  {orderedInterviewQuestions.map((interviewQuestion) => (
 						  <TableRow key={interviewQuestion.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-							  <TableCell component="th" scope="row">{interviewQuestion.interview.candidate.name + interviewDateToString(interviewQuestion.interview)}</TableCell>
+							  <TableCell component="th" scope="row"><Link style={{textDecoration: "underline", color: 'black'}} to={'/interviewQuestions/' + interviewQuestion.id}>{interviewQuestion.interview.candidate.name + interviewDateToString(interviewQuestion.interview)}</Link></TableCell>
 							  <TableCell align="center">{interviewQuestion.question.name}</TableCell>
 							  <TableCell align="center">{interviewQuestion.grade}</TableCell>
 							  <TableCell align="center">{interviewQuestion.comment}</TableCell>

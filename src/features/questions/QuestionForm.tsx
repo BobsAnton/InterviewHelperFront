@@ -1,12 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { 
 	reduxForm,
-	Form,
 	Field,
 	InjectedFormProps,
 } from "redux-form";
+import { connect } from 'react-redux';
 
-import { useAppSelector } from '../../app/hooks';
+import { RootState } from '../../app/store';
+import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import { renderTextField, renderSelectField } from "../../app/reduxFormElements";
 import { selectAllTechnicalFields } from '../technicalFields/technicalFieldsSlice';
 
@@ -42,13 +43,21 @@ const validate = (values: any) => {
 	return errors;
 };
 
-const AddQuestionForm = (props: InjectedFormProps) => {
+const QuestionForm = (props: any) => {
+	const dispatch = useAppDispatch();
 	const { handleSubmit, pristine, submitting } = props;
 	const error = useAppSelector(state => state.questions.error);
 	const technicalFields = useAppSelector(selectAllTechnicalFields);
 
+	useEffect(() => {
+		props.change('name', props.initialValues.name);
+		props.change('description', props.initialValues.description);
+		props.change('complexity', props.initialValues.complexity);
+		props.change('technicalFieldId', props.initialValues.technicalFieldId);
+	}, [dispatch]);
+
 	return (
-		<Form>
+		<form>
 			<Paper sx={{ marginTop: 1, padding: 1 }}>
 				{ (error !== null) ? (<Alert severity="error"><AlertTitle>Error</AlertTitle>{error}</Alert>) : (<></>) }
 				<FormGroup sx={{ marginTop: 3}}>
@@ -56,7 +65,7 @@ const AddQuestionForm = (props: InjectedFormProps) => {
 
 					<Field name="technicalFieldId" component={renderSelectField} sx={{ marginTop: 1 }}>
 						{ technicalFields.technicalFields.map((technicalField) => (
-							<option value={technicalField.id}>{ technicalField.name }</option>
+							<option key={technicalField.id} value={technicalField.id}>{ technicalField.name }</option>
 						)) }
 					</Field>
 
@@ -71,14 +80,34 @@ const AddQuestionForm = (props: InjectedFormProps) => {
 					
 					<Field name="description" component={renderTextField} label="Description" sx={{ marginTop: 1 }} variant="standard" multiline maxRows={4}/>
 
-					<Button sx={{ marginTop: 3 }} variant="contained" onClick={handleSubmit} disabled={pristine || submitting}>Add Question</Button>
+					<Button sx={{ marginTop: 3 }} variant="contained" onClick={handleSubmit} disabled={pristine || submitting}>{props.initialValues.buttonContent}</Button>
 				</FormGroup>
 			</Paper>
-		</Form>
+		</form>
 	);
 }
 
-export default reduxForm({
-	form: "AddQuestionForm",
-	validate
-})(AddQuestionForm);
+const mapStateToProps = (state: RootState, ownProps: any) => {
+	const question = state.questions.questions.find(x => x.id === ownProps.questionId);
+	if (question === undefined) return {
+		initialValues: {
+			buttonContent: "Add Question"
+		}
+	};
+	
+	return {
+		initialValues: {
+			buttonContent: "Edit Question",
+			name: question.name,
+			description: question.description,
+			complexity: question.complexity,
+			technicalFieldId: question.technicalField.id
+		}
+	}
+}
+
+export default connect(mapStateToProps)(reduxForm({
+	form: "QuestionForm",
+	validate,
+	enableReinitialize: true
+})(QuestionForm));

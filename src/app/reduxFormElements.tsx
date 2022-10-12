@@ -13,13 +13,13 @@ import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 
 export const renderTextField = ({label, input, meta, ...custom}: { label: string, input: WrappedFieldInputProps, meta: WrappedFieldMetaProps, custom: any }) => {
 	return (
-		<TextField placeholder={label} helperText={meta.touched && meta.error ? meta.error : ''} error={meta.touched && meta.error} {...input} {...custom} variant="standard" />
+		<TextField placeholder={label} helperText={meta.touched && meta.error !== undefined ? meta.error : ''} error={meta.touched && meta.error !== undefined} {...input} {...custom} variant="standard" />
 	);
 };
 
 export const renderSelectField = ({label, input, meta, children, ...custom}: { label: string, input: WrappedFieldInputProps, meta: WrappedFieldMetaProps, children: any, custom: any }) => {
 	return (
-		<FormControl error={meta.touched && meta.error}>
+		<FormControl error={meta.touched && meta.error !== undefined}>
 			<NativeSelect {...input} {...custom}>
 				{children}
 	  		</NativeSelect>
@@ -30,7 +30,7 @@ export const renderSelectField = ({label, input, meta, children, ...custom}: { l
 export const renderDateTimePicker = ({label, input, meta, ...custom}: { label: string, input: WrappedFieldInputProps, meta: WrappedFieldMetaProps, custom: any }) => {
 	return (
 		<LocalizationProvider dateAdapter={AdapterDayjs}>
-			<DateTimePicker label={label} {...input} {...custom} renderInput={(params) => <TextField {...params} helperText={meta.touched && meta.error ? meta.error : ''} error={meta.touched && meta.error} />} />
+			<DateTimePicker label={label} {...input} {...custom} renderInput={(params) => <TextField {...params} helperText={meta.touched && meta.error !== undefined ? meta.error : ''} error={meta.touched && meta.error !== undefined} />} />
 		</LocalizationProvider>
 	);
 }

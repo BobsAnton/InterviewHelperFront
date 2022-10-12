@@ -6,7 +6,7 @@ import { selectAllCandidates } from '../features/candidates/candidatesSlice';
 
 import { addNewInterview } from '../features/interviews/interviewsSlice';
 import { InterviewsTable } from '../features/interviews/InterviewsTable';
-import AddInterviewForm from '../features/interviews/AddInterviewForm';
+import InterviewForm from '../features/interviews/InterviewForm';
 
 import Grid from '@mui/material/Grid';
 
@@ -16,14 +16,14 @@ export const NewInterviewRoute = () => {
 
 	const onSubmitAddNewInterview = async (values: any) => {
 		await dispatch(addNewInterview({ id: '', date: values.date?.toDate()!, status: values.status, review: values.review, candidate: candidates.candidates.find(x => x.id === values.candidateId)!}));
-		dispatch(reset('AddInterviewForm'));
+		dispatch(reset('InterviewForm'));
 	};
 
 	return (
 		<Grid container>
 			<Grid item xs={12} sx={{ padding: 1 }}>
 				<InterviewsTable/>
-              	<AddInterviewForm onSubmit={onSubmitAddNewInterview}/>
+              	<InterviewForm onSubmit={onSubmitAddNewInterview}/>
 			</Grid>
 	  	</Grid>
 	);

@@ -33,6 +33,17 @@ export const addNewQuestion = createAsyncThunk('questions/addNewQuestion', async
 	})).json();
 });
 
+export const updateQuestion = createAsyncThunk('questions/updateQuestion', async (questionToUpdate: Question) => {
+	return (await fetch(`http://localhost:8081/questions/${questionToUpdate.id}`, {
+		method: 'PUT',
+		headers: {
+			'Content-Type':
+				'application/json;charset=utf-8'
+		},
+		body: JSON.stringify(questionToUpdate)
+	})).json();
+});
+
 export const deleteQuestion = createAsyncThunk('questions/deleteQuestion', async (questionToDelete: Question) => {
 	return (await fetch(`http://localhost:8081/questions/${questionToDelete.id}`, {
 		method: 'DELETE',
@@ -58,7 +69,7 @@ const questionsSlice = createSlice({
 			.addCase(fetchQuestions.fulfilled, (state, action) => {
 				state.error = null;
 				state.status = 'succeeded';
-				state.questions = state.questions.concat(action.payload);
+				state.questions = action.payload;
 			})
 			.addCase(fetchQuestions.rejected, (state, action) => {
 				state.error = action.error.message;
@@ -75,6 +86,24 @@ const questionsSlice = createSlice({
 				state.questions.push(action.payload);
 			})
 			.addCase(addNewQuestion.rejected, (state, action) => {
+				state.error = action.error.message;
+				state.status = 'failed';
+			})
+			// updateQuestion
+			.addCase(updateQuestion.pending, (state, action) => {
+				state.error = null;
+				state.status = 'loading';
+			})
+			.addCase(updateQuestion.fulfilled, (state, action) => {
+				state.error = null;
+				state.status = 'succeeded';
+				let i = state.questions.findIndex((x => x.id == action.payload.id));
+				state.questions[i].name = action.payload.name;
+				state.questions[i].description = action.payload.description;
+				state.questions[i].complexity = action.payload.complexity;
+				state.questions[i].technicalField = action.payload.technicalField;
+			})
+			.addCase(updateQuestion.rejected, (state, action) => {
 				state.error = action.error.message;
 				state.status = 'failed';
 			})

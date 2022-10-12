@@ -1,12 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { 
 	reduxForm,
-	Form,
 	Field,
 	InjectedFormProps,
 } from "redux-form";
+import { connect } from 'react-redux';
 
-import { useAppSelector} from '../../app/hooks';
+import { RootState } from '../../app/store';
+import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import { renderTextField, renderSelectField, renderDateTimePicker } from "../../app/reduxFormElements";
 import { selectAllCandidates } from '../candidates/candidatesSlice';
 
@@ -42,19 +43,27 @@ const validate = (values: any) => {
 	return errors;
 };
 
-const AddInterviewForm = (props: InjectedFormProps) => {
+const InterviewForm = (props: any) => {
+	const dispatch = useAppDispatch();
 	const { handleSubmit, pristine, submitting } = props;
 	const error = useAppSelector(state => state.interviews.error);
 	const candidates = useAppSelector(selectAllCandidates);
 
+	useEffect(() => {
+		props.change('candidateId', props.initialValues.candidateId);
+		props.change('date', props.initialValues.date);
+		props.change('status', props.initialValues.status);
+		props.change('review', props.initialValues.review);
+	}, [dispatch]);
+
 	return (
-		<Form>
+		<form>
 			<Paper sx={{ marginTop: 1, padding: 1 }}>
 				{ (error !== null) ? (<Alert severity="error"><AlertTitle>Error</AlertTitle>{error}</Alert>) : (<></>) }
 				<FormGroup sx={{ marginTop: 3}}>
 					<Field name="candidateId" component={renderSelectField} sx={{ marginBottom: 2 }}>
 						{ candidates.candidates.map((candidate) => (
-							<option value={candidate.id}>{ candidate.name }</option>
+							<option key={candidate.id} value={candidate.id}>{ candidate.name }</option>
 						)) }
 					</Field>
 
@@ -69,14 +78,34 @@ const AddInterviewForm = (props: InjectedFormProps) => {
 
 					<Field name="review" component={renderTextField} label="Review" variant="standard" multiline maxRows={4} sx={{ marginTop: 1 }}/>
 					
-					<Button sx={{ marginTop: 3 }} variant="contained" onClick={handleSubmit} disabled={pristine || submitting}>Add Interview</Button>
+					<Button sx={{ marginTop: 3 }} variant="contained" onClick={handleSubmit} disabled={pristine || submitting}>{props.initialValues.buttonContent}</Button>
 				</FormGroup>
 			</Paper>
-		</Form>
+		</form>
 	);
 }
 
-export default reduxForm({
-	form: "AddInterviewForm",
-	validate
-})(AddInterviewForm);
+const mapStateToProps = (state: RootState, ownProps: any) => {
+	const interview = state.interviews.interviews.find(x => x.id === ownProps.interviewId);
+	if (interview === undefined) return {
+		initialValues: {
+			buttonContent: "Add Interview"
+		}
+	};
+	
+	return {
+		initialValues: {
+			buttonContent: "Edit Interview",
+			candidateId: interview.candidate.id,
+			date: interview.date,
+			status: interview.status,
+			review: interview.review
+		}
+	}
+}
+
+export default connect(mapStateToProps)(reduxForm({
+	form: "InterviewForm",
+	validate,
+	enableReinitialize: true
+})(InterviewForm));

@@ -1,4 +1,6 @@
 import React, { useEffect } from 'react';
+import { Link } from "react-router-dom";
+
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import { selectAllInterviews, fetchInterviews } from './interviewsSlice';
 import { DeleteInterviewButton } from './DeleteInterviewButton';
@@ -43,7 +45,7 @@ export const InterviewsTable = () => {
 				  <TableBody>
 					  {orderedInterviews.map((interview) => (
 						  <TableRow key={interview.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-							  <TableCell component="th" scope="row">{interview.candidate.name}</TableCell>
+							  <TableCell component="th" scope="row"><Link style={{textDecoration: "underline", color: 'black'}} to={'/interviews/' + interview.id}>{interview.candidate.name}</Link></TableCell>
 							  <TableCell align="center">{interviewDateToString(interview)}</TableCell>
 							  <TableCell align="center">{interview.status}</TableCell>
 							  <TableCell align="center">{interview.review}</TableCell>

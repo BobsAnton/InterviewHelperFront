@@ -4,11 +4,11 @@ import { useAppSelector, useAppDispatch } from '../app/hooks';
 
 import { addNewTechnicalField, selectAllTechnicalFields } from '../features/technicalFields/technicalFieldsSlice';
 import { TechnicalFieldsTable } from '../features/technicalFields/TechnicalFieldsTable';
-import AddTechnicalFieldForm from '../features/technicalFields/AddTechnicalFieldForm';
+import TechnicalFieldForm from '../features/technicalFields/TechnicalFieldForm';
 
 import { addNewQuestion } from '../features/questions/questionsSlice';
 import { QuestionsTable } from '../features/questions/QuestionsTable';
-import AddQuestionForm from '../features/questions/AddQuestionForm';
+import QuestionForm from '../features/questions/QuestionForm';
 
 import Grid from '@mui/material/Grid';
 
@@ -18,23 +18,23 @@ export const QuestionsRoute = () => {
 
 	const onSubmitAddNewTechnicalField = async (values: any) => {
 		await dispatch(addNewTechnicalField({ id: '', name: values.name, order: Number(values.order) }));
-		dispatch(reset('AddTechnicalFieldForm'));
+		dispatch(reset('TechnicalFieldForm'));
 	};
 
 	const onSubmitAddNewQuestion = async (values: any) => {
 		await dispatch(addNewQuestion({ id: '', name: values.name, description: values.description, complexity: values.complexity, technicalField: technicalFields.technicalFields.find(x => x.id === values.technicalFieldId)}));
-		dispatch(reset('AddQuestionForm'));
+		dispatch(reset('QuestionForm'));
 	};
 
 	return (
 		<Grid container>
 			<Grid item xs={4} sx={{ padding: 1 }}>
 		  		<TechnicalFieldsTable/>
-		  		<AddTechnicalFieldForm onSubmit={onSubmitAddNewTechnicalField}/>
+		  		<TechnicalFieldForm onSubmit={onSubmitAddNewTechnicalField}/>
 			</Grid>
 			<Grid item xs={8} sx={{ padding: 1 }}>
 		  		<QuestionsTable/>
-		  		<AddQuestionForm onSubmit={onSubmitAddNewQuestion}/>
+		  		<QuestionForm onSubmit={onSubmitAddNewQuestion}/>
 			</Grid>
 	  	</Grid>
 	);

@@ -1,4 +1,6 @@
 import React, { useEffect } from 'react';
+import { Link } from "react-router-dom";
+
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import { selectAllTechnicalFields, fetchTechnicalFields } from './technicalFieldsSlice';
 import { DeleteTechnicalFieldButton } from './DeleteTechnicalFieldButton';
@@ -38,8 +40,8 @@ export const TechnicalFieldsTable = () => {
 				  </TableHead>
 				  <TableBody>
 					  {orderedTechnicalFields.map((technicalField) => (
-						  <TableRow key={technicalField.name} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-							  <TableCell component="th" scope="row">{technicalField.name}</TableCell>
+						  <TableRow key={technicalField.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+							  <TableCell component="th" scope="row"><Link style={{textDecoration: "underline", color: 'black'}} to={'/technicalFields/' + technicalField.id}>{technicalField.name}</Link></TableCell>
 							  <TableCell align="center">{technicalField.order}</TableCell>
 							  <TableCell align="center"><DeleteTechnicalFieldButton {...technicalField}/></TableCell>
 						  </TableRow>

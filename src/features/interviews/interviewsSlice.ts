@@ -33,6 +33,17 @@ export const addNewInterview = createAsyncThunk('interviews/addNewInterview', as
 	})).json();
 });
 
+export const updateInterview = createAsyncThunk('interviews/updateInterview', async (interviewToUpdate: Interview) => {
+	return (await fetch(`http://localhost:8081/interviews/${interviewToUpdate.id}`, {
+		method: 'PUT',
+		headers: {
+			'Content-Type':
+				'application/json;charset=utf-8'
+		},
+		body: JSON.stringify(interviewToUpdate)
+	})).json();
+});
+
 export const deleteInterview = createAsyncThunk('interviews/deleteInterview', async (interviewToDelete: Interview) => {
 	return (await fetch(`http://localhost:8081/interviews/${interviewToDelete.id}`, {
 		method: 'DELETE',
@@ -58,7 +69,7 @@ const interviewsSlice = createSlice({
 			.addCase(fetchInterviews.fulfilled, (state, action) => {
 				state.error = null;
 				state.status = 'succeeded';
-				state.interviews = state.interviews.concat(action.payload);
+				state.interviews = action.payload;
 			})
 			.addCase(fetchInterviews.rejected, (state, action) => {
 				state.error = action.error.message;
@@ -75,6 +86,24 @@ const interviewsSlice = createSlice({
 				state.interviews.push(action.payload);
 			})
 			.addCase(addNewInterview.rejected, (state, action) => {
+				state.error = action.error.message;
+				state.status = 'failed';
+			})
+			// updateInterview
+			.addCase(updateInterview.pending, (state, action) => {
+				state.error = null;
+				state.status = 'loading';
+			})
+			.addCase(updateInterview.fulfilled, (state, action) => {
+				state.error = null;
+				state.status = 'succeeded';
+				let i = state.interviews.findIndex((x => x.id == action.payload.id));
+				state.interviews[i].candidate = action.payload.candidate;
+				state.interviews[i].date = action.payload.date;
+				state.interviews[i].status = action.payload.status;
+				state.interviews[i].review = action.payload.review;
+			})
+			.addCase(updateInterview.rejected, (state, action) => {
 				state.error = action.error.message;
 				state.status = 'failed';
 			})

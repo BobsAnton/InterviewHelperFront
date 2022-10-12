@@ -1,6 +1,5 @@
 import React from 'react';
 
-
 import { Navbar } from './app/Navbar';
 import { Outlet } from "react-router-dom";
 

@@ -3,6 +3,8 @@ import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import { deleteInterviewQuestion } from './interviewQuestionsSlice';
 import { InterviewQuestion } from "../../types/models/interviewQuestionType";
 
+import { interviewDateToString } from '../../types/models/interviewType';
+
 import Button from '@mui/material/Button';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Dialog from '@mui/material/Dialog';
@@ -33,7 +35,7 @@ export const DeleteInterviewQuestionButton = (interviewQuestion: InterviewQuesti
 			</Button>
 			<Dialog open={openDeleteDialog} onClose={handleCloseDeleteDialog} aria-labelledby="alert-dialog-title">
 				<DialogTitle id="alert-dialog-title">
-					Delete this interview question: "{interviewQuestion.interview.candidate.name + ' ' + interviewQuestion.interview.date} ↔ {interviewQuestion.question.name}"?
+					Delete this interview question: "{interviewQuestion.interview.candidate.name + ' ' + interviewDateToString(interviewQuestion.interview)} ↔ {interviewQuestion.question.name}"?
 				</DialogTitle>
 				<DialogActions>
 					<Button onClick={handleCloseDeleteDialog}>Cancel</Button>

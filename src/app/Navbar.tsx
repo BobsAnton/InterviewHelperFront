@@ -15,7 +15,7 @@ export const Navbar = () => {
         <Typography variant='h4' sx={{ color: "#f28159", marginRight: 1, fontWeight: "bold" }}>
           <PeopleAlt />
         </Typography>
-        <Tabs variant="scrollable" scrollButtons="auto">
+        <Tabs variant="scrollable" scrollButtons="auto" value={false}>
           <Tab label="Вопросы и области" sx={{ color: "white" }} component={Link} to={'/questions'} />
           <Tab label="Кандидаты" sx={{ color: "white" }} component={Link} to={'/candidates'}/>
           <Tab label="Интервью" sx={{ color: "white" }} component={Link} to={'/interviews'}/>

@@ -1,7 +1,6 @@
 import React from "react";
 import { 
 	reduxForm,
-	Form,
 	Field,
 	InjectedFormProps,
 } from "redux-form";
@@ -40,26 +39,26 @@ const AddCandidateTechnicalFieldForm = (props: InjectedFormProps) => {
 	const technicalFields = useAppSelector(selectAllTechnicalFields);
 
 	return (
-		<Form>
+		<form>
 			<Paper sx={{ marginTop: 1, padding: 1 }}>
 				{ (error !== null) ? (<Alert severity="error"><AlertTitle>Error</AlertTitle>{error}</Alert>) : (<></>) }
 				<FormGroup sx={{ marginTop: 3}}>
 					<Field name="candidateId" component={renderSelectField}>
 						{ candidates.candidates.map((candidate) => (
-							<option value={candidate.id}>{ candidate.name }</option>
+							<option key={candidate.id} value={candidate.id}>{ candidate.name }</option>
 						)) }
 					</Field>
 					
 					<Field name="technicalFieldId" component={renderSelectField} sx={{ marginTop: 1 }}>
 						{ technicalFields.technicalFields.map((technicalField) => (
-							<option value={technicalField.id}>{ technicalField.name }</option>
+							<option key={technicalField.id} value={technicalField.id}>{ technicalField.name }</option>
 						)) }
 					</Field>
 
 					<Button sx={{ marginTop: 3 }} variant="contained" onClick={handleSubmit} disabled={pristine || submitting}>Add Candidate-TechnicalField</Button>
 				</FormGroup>
 			</Paper>
-		</Form>
+		</form>
 	);
 }
 

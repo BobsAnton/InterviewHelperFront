@@ -31,6 +31,17 @@ export const addNewCandidate = createAsyncThunk('candidates/addNewCandidate', as
 	})).json();
 });
 
+export const updateCandidate = createAsyncThunk('candidates/updateCandidate', async (candidateToUpdate: Candidate) => {
+	return (await fetch(`http://localhost:8081/candidates/${candidateToUpdate.id}`, {
+		method: 'PUT',
+		headers: {
+			'Content-Type':
+				'application/json;charset=utf-8'
+		},
+		body: JSON.stringify(candidateToUpdate)
+	})).json();
+});
+
 export const deleteCandidate = createAsyncThunk('candidates/deleteCandidate', async (candidateToDelete: Candidate) => {
 	return (await fetch(`http://localhost:8081/candidates/${candidateToDelete.id}`, {
 		method: 'DELETE',
@@ -56,7 +67,7 @@ const candidatesSlice = createSlice({
 			.addCase(fetchCandidates.fulfilled, (state, action) => {
 				state.error = null;
 				state.status = 'succeeded';
-				state.candidates = state.candidates.concat(action.payload);
+				state.candidates = action.payload;
 			})
 			.addCase(fetchCandidates.rejected, (state, action) => {
 				state.error = action.error.message;
@@ -73,6 +84,21 @@ const candidatesSlice = createSlice({
 				state.candidates.push(action.payload);
 			})
 			.addCase(addNewCandidate.rejected, (state, action) => {
+				state.error = action.error.message;
+				state.status = 'failed';
+			})
+			// updateCandidate
+			.addCase(updateCandidate.pending, (state, action) => {
+				state.error = null;
+				state.status = 'loading';
+			})
+			.addCase(updateCandidate.fulfilled, (state, action) => {
+				state.error = null;
+				state.status = 'succeeded';
+				let i = state.candidates.findIndex((x => x.id == action.payload.id));
+				state.candidates[i].name = action.payload.name;
+			})
+			.addCase(updateCandidate.rejected, (state, action) => {
 				state.error = action.error.message;
 				state.status = 'failed';
 			})

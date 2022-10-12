@@ -1,4 +1,6 @@
 import React, { useEffect } from 'react';
+import { Link } from "react-router-dom";
+
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import { selectAllQuestions, fetchQuestions } from './questionsSlice';
 import { DeleteQuestionButton } from './DeleteQuestionButton';
@@ -40,8 +42,8 @@ export const QuestionsTable = () => {
 				  </TableHead>
 				  <TableBody>
 					  {orderedQuestions.map((question) => (
-						  <TableRow key={question.name} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-							  <TableCell component="th" scope="row">{question.name}</TableCell>
+						  <TableRow key={question.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+							  <TableCell component="th" scope="row"><Link style={{textDecoration: "underline", color: 'black'}} to={'/questions/' + question.id}>{question.name}</Link></TableCell>
 							  <TableCell align="center">{question.technicalField.name}</TableCell>
 							  <TableCell align="center">{question.complexity}</TableCell>
 							  <TableCell align="center">{question.description}</TableCell>

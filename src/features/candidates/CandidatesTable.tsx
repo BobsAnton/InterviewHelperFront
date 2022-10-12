@@ -1,4 +1,6 @@
 import React, { useEffect } from 'react';
+import { Link } from "react-router-dom";
+
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import { selectAllCandidates, fetchCandidates } from './candidatesSlice';
 import { selectAllCandidateTechnicalFields, fetchCandidateTechnicalFields } from '../candidateTechnicalFields/candidateTechnicalFieldsSlice';
@@ -47,8 +49,8 @@ export const CandidatesTable = () => {
 				  </TableHead>
 				  <TableBody>
 					  {orderedCandidates.map((candidate) => (
-						  <TableRow key={candidate.name} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-							  <TableCell component="th" scope="row">{candidate.name}</TableCell>
+						  <TableRow key={candidate.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+							  <TableCell component="th" scope="row"><Link style={{textDecoration: "underline", color: 'black'}} to={candidate.id}>{candidate.name}</Link></TableCell>
 							  <TableCell align="center">{candidateTechnicalFields.candidateTechnicalFields.filter(candidateTechnicalField => candidateTechnicalField.candidate.id === candidate.id).map(candidateTechnicalField => candidateTechnicalField.technicalField.name).join(', ')}</TableCell>
 							  <TableCell align="center">{interviews.interviews.filter(interview => interview.candidate.id === candidate.id).sort((a, b) => new Date(a.date).valueOf() - new Date(b.date).valueOf()).map(interview => interviewDateToString(interview)).join(', ')}</TableCell>
 							  <TableCell align="center"><DeleteCandidateButton {...candidate}/></TableCell>
