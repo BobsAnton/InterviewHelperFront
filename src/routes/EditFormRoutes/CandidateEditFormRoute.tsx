@@ -26,7 +26,6 @@ export const CandidateEditFormRoute = () => {
 
 	const onSubmitUpdateCandidate = async (values: any, candidateId: string) => {
 		await dispatch(updateCandidate({ id: candidateId, name: values.name }));
-		dispatch(reset('CandidateForm'));
 	};
 
 	return (

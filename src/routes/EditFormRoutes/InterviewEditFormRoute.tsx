@@ -28,7 +28,6 @@ export const InterviewEditFormRoute = () => {
 
 	const onSubmitUpdateInterview = async (values: any, interviewId: string) => {
 		await dispatch(updateInterview({ id: interviewId, date: values.date?.toDate()!, status: values.status, review: values.review, candidate: candidates.candidates.find(x => x.id === values.candidateId)!}));
-		dispatch(reset('InterviewForm'));
 	};
 
 	return (

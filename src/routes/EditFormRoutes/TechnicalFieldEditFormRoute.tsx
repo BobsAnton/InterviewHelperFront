@@ -26,7 +26,6 @@ export const TechnicalFieldEditFormRoute = () => {
 
 	const onSubmitUpdateTechnicalField = async (values: any, technicalFieldId: string) => {
 		await dispatch(updateTechnicalField({ id: technicalFieldId, name: values.name, order: Number(values.order) }));
-		dispatch(reset('TechnicalFieldForm'));
 	};
 
 	return (

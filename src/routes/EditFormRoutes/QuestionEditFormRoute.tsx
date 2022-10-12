@@ -28,7 +28,6 @@ export const QuestionEditFormRoute = () => {
 
 	const onSubmitUpdateQuestion = async (values: any, questionId: string) => {
 		await dispatch(updateQuestion({ id: questionId, name: values.name, description: values.description, complexity: values.complexity, technicalField: technicalFields.technicalFields.find(x => x.id === values.technicalFieldId)!}));
-		dispatch(reset('QuestionForm'));
 	};
 
 	return (
