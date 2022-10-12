@@ -27,13 +27,24 @@ export const CandidatesTable = () => {
 
 	useEffect(() => {
 		if (status === 'idle') {
-			//dispatch(fetchCandidateTechnicalFields());
+			dispatch(fetchCandidateTechnicalFields());
 			dispatch(fetchInterviews());
 			dispatch(fetchCandidates());
 		}
 	}, [status, dispatch]);
 
-	const orderedCandidates = candidates.candidates.slice().sort((a, b) => a.name.localeCompare(b.name));
+	const orderedCandidates = candidates.candidates.slice().sort((a, b) => {
+		const datesA = interviews.interviews.filter(interview => interview.candidate.id === a.id).map(x => x.date).sort((date1, date2) => new Date(date1).valueOf() - new Date(date2).valueOf());
+		const datesB = interviews.interviews.filter(interview => interview.candidate.id === b.id).map(x => x.date).sort((date1, date2) => new Date(date1).valueOf() - new Date(date2).valueOf());
+		
+		let lastInterviewDateA = datesA[datesA.length - 1];
+		let lastInterviewDateB = datesB[datesB.length - 1];
+
+		lastInterviewDateA = lastInterviewDateA !== undefined ? lastInterviewDateA : new Date();
+		lastInterviewDateB = lastInterviewDateB !== undefined ? lastInterviewDateB : new Date();
+
+		return new Date(lastInterviewDateB).valueOf() - new Date(lastInterviewDateA).valueOf();
+	});
 
 	return (
 		<>
@@ -52,7 +63,7 @@ export const CandidatesTable = () => {
 						  <TableRow key={candidate.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
 							  <TableCell component="th" scope="row"><Link style={{textDecoration: "underline", color: 'black'}} to={candidate.id}>{candidate.name}</Link></TableCell>
 							  <TableCell align="center">{candidateTechnicalFields.candidateTechnicalFields.filter(candidateTechnicalField => candidateTechnicalField.candidate.id === candidate.id).map(candidateTechnicalField => candidateTechnicalField.technicalField.name).join(', ')}</TableCell>
-							  <TableCell align="center">{interviews.interviews.filter(interview => interview.candidate.id === candidate.id).sort((a, b) => new Date(a.date).valueOf() - new Date(b.date).valueOf()).map(interview => interviewDateToString(interview)).join(', ')}</TableCell>
+							  <TableCell align="center">{interviews.interviews.filter(interview => interview.candidate.id === candidate.id).sort((a, b) => new Date(b.date).valueOf() - new Date(a.date).valueOf()).map(interview => interviewDateToString(interview)).join(', ')}</TableCell>
 							  <TableCell align="center"><DeleteCandidateButton {...candidate}/></TableCell>
 						  </TableRow>
 					  ))}

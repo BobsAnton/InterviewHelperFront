@@ -27,7 +27,15 @@ export const InterviewQuestionsTable = () => {
 		}
 	}, [status, dispatch]);
 
-	const orderedInterviewQuestions = interviewQuestions.interviewQuestions.slice().sort((a, b) => a.interview.candidate.name.localeCompare(b.interview.candidate.name));
+	const orderedInterviewQuestions = interviewQuestions.interviewQuestions.slice().sort((a, b) => {
+		let interviewDateA = a.interview.date;
+		let interviewDateB = b.interview.date;
+
+		interviewDateA = interviewDateA !== undefined ? interviewDateA : new Date();
+		interviewDateB = interviewDateB !== undefined ? interviewDateB : new Date();
+
+		return new Date(interviewDateB).valueOf() - new Date(interviewDateA).valueOf();
+	});
 
 	return (
 		<>
