@@ -2,8 +2,9 @@ import React, { useEffect } from 'react';
 import { Link } from "react-router-dom";
 
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
-import { selectAllInterviewQuestions, fetchInterviewQuestions } from './interviewQuestionsSlice';
+import { selectAllInterviewQuestions } from './interviewQuestionsSlice';
 import { DeleteInterviewQuestionButton } from './DeleteInterviewQuestionButton';
+import { fetchAllData } from '../fetchAllData';
 
 import { interviewDateToString } from '../../types/models/interviewType';
 
@@ -23,7 +24,7 @@ export const InterviewQuestionsTable = () => {
 
 	useEffect(() => {
 		if (status === 'idle') {
-			dispatch(fetchInterviewQuestions());
+			(async () => await fetchAllData(dispatch))();
 		}
 	}, [status, dispatch]);
 
@@ -43,8 +44,8 @@ export const InterviewQuestionsTable = () => {
 			  <Table size="small" aria-label="a dense table">
 				  <TableHead sx={{ backgroundColor: '#C0C0C0' }}>
 					  <TableRow>
-						  <TableCell>Interview</TableCell>
-						  <TableCell align="center">Question</TableCell>
+					  	  <TableCell align="center">Question</TableCell>
+						  <TableCell align="center">Interview</TableCell>
 						  <TableCell align="center">Grade</TableCell>
 						  <TableCell align="center">Comment</TableCell>
 						  <TableCell align="center"></TableCell>
@@ -53,8 +54,8 @@ export const InterviewQuestionsTable = () => {
 				  <TableBody>
 					  {orderedInterviewQuestions.map((interviewQuestion) => (
 						  <TableRow key={interviewQuestion.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-							  <TableCell component="th" scope="row"><Link style={{textDecoration: "underline", color: 'black'}} to={'/interviewQuestions/' + interviewQuestion.id}>{interviewQuestion.interview.candidate.name + interviewDateToString(interviewQuestion.interview)}</Link></TableCell>
-							  <TableCell align="center">{interviewQuestion.question.name}</TableCell>
+							  <TableCell component="th" scope="row"><Link style={{textDecoration: "underline", color: 'black'}} to={'/interviewQuestions/' + interviewQuestion.id}>{interviewQuestion.question.name}</Link></TableCell>
+							  <TableCell align="center">Interview: {interviewQuestion.interview.candidate.name + interviewDateToString(interviewQuestion.interview)}</TableCell>
 							  <TableCell align="center">{interviewQuestion.grade}</TableCell>
 							  <TableCell align="center">{interviewQuestion.comment}</TableCell>
 							  <TableCell align="center"><DeleteInterviewQuestionButton {...interviewQuestion}/></TableCell>

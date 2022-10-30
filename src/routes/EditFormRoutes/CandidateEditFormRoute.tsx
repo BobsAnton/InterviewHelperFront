@@ -1,5 +1,4 @@
 import React from 'react';
-import { reset } from 'redux-form';
 import { LoaderFunctionArgs } from "react-router";
 import { useLoaderData } from "react-router-dom";
 
@@ -10,6 +9,7 @@ import { Candidate } from "../../types/models/candidateType";
 import { updateCandidate, selectAllCandidates } from '../../features/candidates/candidatesSlice';
 import CandidateForm from '../../features/candidates/CandidateForm';
 import { CandidateInfo } from "../../features/candidates/CandidateInfo";
+import { fetchAllData } from '../../features/fetchAllData';
 
 import Grid from '@mui/material/Grid';
 
@@ -26,6 +26,7 @@ export const CandidateEditFormRoute = () => {
 
 	const onSubmitUpdateCandidate = async (values: any, candidateId: string) => {
 		await dispatch(updateCandidate({ id: candidateId, name: values.name }));
+		await fetchAllData(dispatch);
 	};
 
 	return (

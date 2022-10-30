@@ -4,9 +4,6 @@ import { CandidateTechnicalField } from '../../types/models/candidateTechnicalFi
 import { Status } from '../../types/statusType';
 import { Error } from '../../types/errorType';
 
-import { deleteTechnicalField } from '../technicalFields/technicalFieldsSlice';
-import { deleteCandidate } from '../candidates/candidatesSlice';
-
 interface CandidateTechnicalFieldsState {
 	candidateTechnicalFields: Array<CandidateTechnicalField>;
 	status: Status;
@@ -51,7 +48,6 @@ const candidateTechnicalFieldsSlice = createSlice({
 	reducers: {},
 	extraReducers(builder) {
 		builder
-			// fetchCandidateTechnicalFields
 			.addCase(fetchCandidateTechnicalFields.pending, (state, action) => {
 				state.error = null;
 				state.status = 'loading';
@@ -65,7 +61,6 @@ const candidateTechnicalFieldsSlice = createSlice({
 				state.error = action.error.message;
 				state.status = 'failed';
 			})
-			// addNewCandidateTechnicalField
 			.addCase(addNewCandidateTechnicalField.pending, (state, action) => {
 				state.error = null;
 				state.status = 'loading';
@@ -79,7 +74,6 @@ const candidateTechnicalFieldsSlice = createSlice({
 				state.error = action.error.message;
 				state.status = 'failed';
 			})
-			// deleteCandidateTechnicalField
 			.addCase(deleteCandidateTechnicalField.pending, (state, action) => {
 				state.error = null;
 				state.status = 'loading';
@@ -92,18 +86,6 @@ const candidateTechnicalFieldsSlice = createSlice({
 			.addCase(deleteCandidateTechnicalField.rejected, (state, action) => {
 				state.error = action.error.message;
 				state.status = 'failed';
-			})
-			// deleteTechnicalField
-			.addCase(deleteTechnicalField.fulfilled, (state, action) => {
-				state.error = null;
-				state.status = 'succeeded';
-				state.candidateTechnicalFields = state.candidateTechnicalFields.filter(candidateTechnicalField => candidateTechnicalField.technicalField.id !== action.payload.id)
-			})
-			// deleteCandidate
-			.addCase(deleteCandidate.fulfilled, (state, action) => {
-				state.error = null;
-				state.status = 'succeeded';
-				state.candidateTechnicalFields = state.candidateTechnicalFields.filter(candidateTechnicalField => candidateTechnicalField.candidate.id !== action.payload.id)
 			});
 	}
 });

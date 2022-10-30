@@ -1,5 +1,4 @@
 import React from 'react';
-import { reset } from 'redux-form';
 import { LoaderFunctionArgs } from "react-router";
 import { useLoaderData } from "react-router-dom";
 
@@ -10,6 +9,7 @@ import { TechnicalField } from "../../types/models/technicalFieldType";
 import { updateTechnicalField, selectAllTechnicalFields } from '../../features/technicalFields/technicalFieldsSlice';
 import TechnicalFieldForm from '../../features/technicalFields/TechnicalFieldForm';
 import { TechnicalFieldInfo } from "../../features/technicalFields/TechnicalFieldInfo";
+import { fetchAllData } from '../../features/fetchAllData';
 
 import Grid from '@mui/material/Grid';
 
@@ -26,6 +26,7 @@ export const TechnicalFieldEditFormRoute = () => {
 
 	const onSubmitUpdateTechnicalField = async (values: any, technicalFieldId: string) => {
 		await dispatch(updateTechnicalField({ id: technicalFieldId, name: values.name, order: Number(values.order) }));
+		await fetchAllData(dispatch);
 	};
 
 	return (

@@ -3,6 +3,7 @@ import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import { deleteInterview } from './interviewsSlice';
 import { Interview } from "../../types/models/interviewType";
 import { selectAllInterviewQuestions } from '../interviewQuestions/interviewQuestionsSlice';
+import { fetchAllData } from '../fetchAllData';
 
 import { interviewDateToString } from '../../types/models/interviewType';
 
@@ -23,6 +24,7 @@ export const DeleteInterviewButton = (interview: Interview) => {
 	const onDeleteInterviewClicked = async () => {
 		setOpenDeleteDialog(false);
 		await dispatch(deleteInterview(interview));
+		await fetchAllData(dispatch);
 	};
 
 	const handleOpenDeleteDialog = () => {	setOpenDeleteDialog(true); };

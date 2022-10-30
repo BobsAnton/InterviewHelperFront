@@ -10,6 +10,8 @@ import { addNewQuestion } from '../features/questions/questionsSlice';
 import { QuestionsTable } from '../features/questions/QuestionsTable';
 import QuestionForm from '../features/questions/QuestionForm';
 
+import { fetchAllData } from '../features/fetchAllData';
+
 import Grid from '@mui/material/Grid';
 
 export const QuestionsRoute = () => {
@@ -18,11 +20,13 @@ export const QuestionsRoute = () => {
 
 	const onSubmitAddNewTechnicalField = async (values: any) => {
 		await dispatch(addNewTechnicalField({ id: '', name: values.name, order: Number(values.order) }));
+		await fetchAllData(dispatch);
 		dispatch(reset('TechnicalFieldForm'));
 	};
 
 	const onSubmitAddNewQuestion = async (values: any) => {
 		await dispatch(addNewQuestion({ id: '', name: values.name, description: values.description, complexity: values.complexity, technicalField: technicalFields.technicalFields.find(x => x.id === values.technicalFieldId)}));
+		await fetchAllData(dispatch);
 		dispatch(reset('QuestionForm'));
 	};
 

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import { deleteCandidateTechnicalField } from './candidateTechnicalFieldsSlice';
 import { CandidateTechnicalField } from "../../types/models/candidateTechnicalFieldType";
+import { fetchAllData } from '../fetchAllData';
 
 import Button from '@mui/material/Button';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -19,6 +20,7 @@ export const DeleteCandidateTechnicalFieldButton = (candidateTechnicalField: Can
 	const onDeleteCandidateTechnicalFieldClicked = async () => {
 		setOpenDeleteDialog(false);
 		await dispatch(deleteCandidateTechnicalField(candidateTechnicalField));
+		await fetchAllData(dispatch);
 	};
 
 	const handleOpenDeleteDialog = () => {	setOpenDeleteDialog(true); };

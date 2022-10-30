@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import { deleteInterviewQuestion } from './interviewQuestionsSlice';
 import { InterviewQuestion } from "../../types/models/interviewQuestionType";
+import { fetchAllData } from '../fetchAllData';
 
 import { interviewDateToString } from '../../types/models/interviewType';
 
@@ -21,6 +22,7 @@ export const DeleteInterviewQuestionButton = (interviewQuestion: InterviewQuesti
 	const onDeleteInterviewQuestionClicked = async () => {
 		setOpenDeleteDialog(false);
 		await dispatch(deleteInterviewQuestion(interviewQuestion));
+		await fetchAllData(dispatch);
 	};
 
 	const handleOpenDeleteDialog = () => {	setOpenDeleteDialog(true); };

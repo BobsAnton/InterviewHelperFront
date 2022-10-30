@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
-import { selectAllCandidateTechnicalFields, fetchCandidateTechnicalFields } from './candidateTechnicalFieldsSlice';
+import { selectAllCandidateTechnicalFields } from './candidateTechnicalFieldsSlice';
 import { DeleteCandidateTechnicalFieldButton } from './DeleteCandidateTechnicalFieldButton';
+import { fetchAllData } from '../fetchAllData';
 
 import Paper from '@mui/material/Paper';
 import TableContainer from '@mui/material/TableContainer';
@@ -19,7 +20,7 @@ export const CandidateTechnicalFieldsTable = () => {
 
 	useEffect(() => {
 		if (status === 'idle') {
-			dispatch(fetchCandidateTechnicalFields());
+			(async () => await fetchAllData(dispatch))();
 		}
 	}, [status, dispatch]);
 

@@ -12,6 +12,8 @@ import { addNewCandidateTechnicalField } from '../features/candidateTechnicalFie
 import { CandidateTechnicalFieldsTable } from '../features/candidateTechnicalFields/CandidateTechnicalFieldsTable';
 import AddCandidateTechnicalFieldForm from '../features/candidateTechnicalFields/AddCandidateTechnicalFieldForm';
 
+import { fetchAllData } from '../features/fetchAllData';
+
 import Grid from '@mui/material/Grid';
 
 export const CandidatesRoute = () => {
@@ -21,11 +23,13 @@ export const CandidatesRoute = () => {
 
 	const onSubmitAddNewCandidate = async (values: any) => {
 		await dispatch(addNewCandidate({ id: '', name: values.name }));
+		await fetchAllData(dispatch);
 		dispatch(reset('CandidateForm'));
 	};
 
 	const onSubmitAddNewCandidateTechnicalField = async (values: any) => {
 		await dispatch(addNewCandidateTechnicalField({ id: '', candidate: candidates.candidates.find(x => x.id === values.candidateId)!, technicalField: technicalFields.technicalFields.find(x => x.id === values.technicalFieldId)!}));
+		await fetchAllData(dispatch);
 		dispatch(reset('AddCandidateTechnicalFieldForm'));
 	};
 

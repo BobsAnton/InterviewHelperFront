@@ -59,7 +59,6 @@ const technicalFieldsSlice = createSlice({
 	reducers: {},
 	extraReducers(builder) {
 		builder
-			// fetchTechnicalFields
 			.addCase(fetchTechnicalFields.pending, (state, action) => {
 				state.error = null;
 				state.status = 'loading';
@@ -73,7 +72,6 @@ const technicalFieldsSlice = createSlice({
 				state.error = action.error.message;
 				state.status = 'failed';
 			})
-			// addNewTechnicalField
 			.addCase(addNewTechnicalField.pending, (state, action) => {
 				state.error = null;
 				state.status = 'loading';
@@ -87,7 +85,6 @@ const technicalFieldsSlice = createSlice({
 				state.error = action.error.message;
 				state.status = 'failed';
 			})
-			// updateTechnicalField
 			.addCase(updateTechnicalField.pending, (state, action) => {
 				state.error = null;
 				state.status = 'loading';
@@ -103,7 +100,6 @@ const technicalFieldsSlice = createSlice({
 				state.error = action.error.message;
 				state.status = 'failed';
 			})
-			// deleteTechnicalField
 			.addCase(deleteTechnicalField.pending, (state, action) => {
 				state.error = null;
 				state.status = 'loading';

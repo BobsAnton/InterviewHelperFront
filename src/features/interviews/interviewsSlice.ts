@@ -4,8 +4,6 @@ import { Interview } from '../../types/models/interviewType';
 import { Status } from '../../types/statusType';
 import { Error } from '../../types/errorType';
 
-import { deleteCandidate } from '../candidates/candidatesSlice';
-
 interface InterviewsState {
 	interviews: Array<Interview>;
 	status: Status;
@@ -61,7 +59,6 @@ const interviewsSlice = createSlice({
 	reducers: {},
 	extraReducers(builder) {
 		builder
-			// fetchInterviews
 			.addCase(fetchInterviews.pending, (state, action) => {
 				state.error = null;
 				state.status = 'loading';
@@ -75,7 +72,6 @@ const interviewsSlice = createSlice({
 				state.error = action.error.message;
 				state.status = 'failed';
 			})
-			// addNewInterview
 			.addCase(addNewInterview.pending, (state, action) => {
 				state.error = null;
 				state.status = 'loading';
@@ -89,7 +85,6 @@ const interviewsSlice = createSlice({
 				state.error = action.error.message;
 				state.status = 'failed';
 			})
-			// updateInterview
 			.addCase(updateInterview.pending, (state, action) => {
 				state.error = null;
 				state.status = 'loading';
@@ -107,7 +102,6 @@ const interviewsSlice = createSlice({
 				state.error = action.error.message;
 				state.status = 'failed';
 			})
-			// deleteInterview
 			.addCase(deleteInterview.pending, (state, action) => {
 				state.error = null;
 				state.status = 'loading';
@@ -120,12 +114,6 @@ const interviewsSlice = createSlice({
 			.addCase(deleteInterview.rejected, (state, action) => {
 				state.error = action.error.message;
 				state.status = 'failed';
-			})
-			// deleteCandidate
-			.addCase(deleteCandidate.fulfilled, (state, action) => {
-				state.error = null;
-				state.status = 'succeeded';
-				state.interviews = state.interviews.filter(interview => interview.candidate.id !== action.payload.id)
 			});
 	}
 });

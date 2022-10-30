@@ -5,6 +5,7 @@ import { selectAllQuestions } from '../questions/questionsSlice';
 import { selectAllInterviewQuestions } from '../interviewQuestions/interviewQuestionsSlice';
 import { selectAllCandidateTechnicalFields } from '../candidateTechnicalFields/candidateTechnicalFieldsSlice';
 import { TechnicalField } from "../../types/models/technicalFieldType";
+import { fetchAllData } from '../fetchAllData';
 
 import Button from '@mui/material/Button';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -25,6 +26,7 @@ export const DeleteTechnicalFieldButton = (technicalField: TechnicalField) => {
 	const onDeleteTechnicalFieldClicked = async () => {
 		setOpenDeleteDialog(false);
 		await dispatch(deleteTechnicalField(technicalField));
+		await fetchAllData(dispatch);
 	};
 
 	const handleOpenDeleteDialog = () => {	setOpenDeleteDialog(true); };

@@ -2,10 +2,11 @@ import React, { useEffect } from 'react';
 import { Link } from "react-router-dom";
 
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
-import { selectAllCandidates, fetchCandidates } from './candidatesSlice';
-import { selectAllCandidateTechnicalFields, fetchCandidateTechnicalFields } from '../candidateTechnicalFields/candidateTechnicalFieldsSlice';
-import { selectAllInterviews, fetchInterviews } from '../interviews/interviewsSlice';
+import { selectAllCandidates } from './candidatesSlice';
+import { selectAllCandidateTechnicalFields } from '../candidateTechnicalFields/candidateTechnicalFieldsSlice';
+import { selectAllInterviews } from '../interviews/interviewsSlice';
 import { DeleteCandidateButton } from './DeleteCandidateButton';
+import { fetchAllData } from '../fetchAllData';
 
 import { interviewDateToString } from '../../types/models/interviewType';
 
@@ -27,9 +28,7 @@ export const CandidatesTable = () => {
 
 	useEffect(() => {
 		if (status === 'idle') {
-			dispatch(fetchCandidateTechnicalFields());
-			dispatch(fetchInterviews());
-			dispatch(fetchCandidates());
+			(async () => await fetchAllData(dispatch))();
 		}
 	}, [status, dispatch]);
 

@@ -10,6 +10,7 @@ import { RootState } from '../../app/store';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import { renderTextField, renderSelectField, renderDateTimePicker } from "../../app/reduxFormElements";
 import { selectAllCandidates } from '../candidates/candidatesSlice';
+import { fetchAllData } from '../fetchAllData';
 
 import Paper from '@mui/material/Paper';
 import FormGroup from '@mui/material/FormGroup';
@@ -35,11 +36,6 @@ const validate = (values: any) => {
 		errors.status = "Required";
 	}
 
-	if (!values.review)
-	{
-		errors.review = "Required";
-	}
-
 	return errors;
 };
 
@@ -50,6 +46,7 @@ const InterviewForm = (props: any) => {
 	const candidates = useAppSelector(selectAllCandidates);
 
 	useEffect(() => {
+		(async () => await fetchAllData(dispatch))();
 		props.change('candidateId', props.initialValues.candidateId);
 		props.change('date', props.initialValues.date);
 		props.change('status', props.initialValues.status);
@@ -89,7 +86,7 @@ const mapStateToProps = (state: RootState, ownProps: any) => {
 	const interview = state.interviews.interviews.find(x => x.id === ownProps.interviewId);
 	if (interview === undefined) return {
 		initialValues: {
-			buttonContent: "Add Interview"
+			buttonContent: "Start Interview"
 		}
 	};
 	

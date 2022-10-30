@@ -59,7 +59,6 @@ const candidatesSlice = createSlice({
 	reducers: {},
 	extraReducers(builder) {
 		builder
-			// fetchCandidates
 			.addCase(fetchCandidates.pending, (state, action) => {
 				state.error = null;
 				state.status = 'loading';
@@ -73,7 +72,6 @@ const candidatesSlice = createSlice({
 				state.error = action.error.message;
 				state.status = 'failed';
 			})
-			// addNewCandidate
 			.addCase(addNewCandidate.pending, (state, action) => {
 				state.error = null;
 				state.status = 'loading';
@@ -87,7 +85,6 @@ const candidatesSlice = createSlice({
 				state.error = action.error.message;
 				state.status = 'failed';
 			})
-			// updateCandidate
 			.addCase(updateCandidate.pending, (state, action) => {
 				state.error = null;
 				state.status = 'loading';
@@ -102,7 +99,6 @@ const candidatesSlice = createSlice({
 				state.error = action.error.message;
 				state.status = 'failed';
 			})
-			// deleteCandidate
 			.addCase(deleteCandidate.pending, (state, action) => {
 				state.error = null;
 				state.status = 'loading';

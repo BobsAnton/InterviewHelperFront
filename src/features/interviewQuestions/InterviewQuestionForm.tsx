@@ -9,9 +9,10 @@ import { connect } from 'react-redux';
 import { RootState } from '../../app/store';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import { renderTextField, renderSelectField } from "../../app/reduxFormElements";
-import { selectAllInterviews } from '../interviews/interviewsSlice';
-import { selectAllQuestions } from '../questions/questionsSlice';
+import { selectAllInterviews, fetchInterviews } from '../interviews/interviewsSlice';
+import { selectAllQuestions, fetchQuestions } from '../questions/questionsSlice';
 import { interviewDateToString } from '../../types/models/interviewType';
+import { fetchAllData } from '../fetchAllData';
 
 import Paper from '@mui/material/Paper';
 import FormGroup from '@mui/material/FormGroup';
@@ -37,11 +38,6 @@ const validate = (values: any) => {
 		errors.grade = "Required";
 	}
 
-	if (!values.comment)
-	{
-		errors.comment = "Required";
-	}
-
 	return errors;
 };
 
@@ -53,6 +49,7 @@ const InterviewQuestionForm = (props: any) => {
 	const questions = useAppSelector(selectAllQuestions);
 
 	useEffect(() => {
+		(async () => await fetchAllData(dispatch))();
 		props.change('interviewId', props.initialValues.interviewId);
 		props.change('questionId', props.initialValues.questionId);
 		props.change('grade', props.initialValues.grade);
@@ -64,15 +61,15 @@ const InterviewQuestionForm = (props: any) => {
 			<Paper sx={{ marginTop: 1, padding: 1 }}>
 				{ (error !== null) ? (<Alert severity="error"><AlertTitle>Error</AlertTitle>{error}</Alert>) : (<></>) }
 				<FormGroup sx={{ marginTop: 3}}>
-					<Field name="interviewId" component={renderSelectField}>
-						{ interviews.interviews.map((interview) => (
-							<option key={interview.id} value={interview.id}>{ interview.candidate.name + ' ' + interviewDateToString(interview) }</option>
-						)) }
-					</Field>
-					
-					<Field name="questionId" component={renderSelectField} sx={{ marginTop: 1 }}>
+					<Field name="questionId" component={renderSelectField}>
 						{ questions.questions.map((question) => (
 							<option key={question.id} value={question.id}>{ question.name }</option>
+						)) }
+					</Field>
+
+					<Field name="interviewId" component={renderSelectField} sx={{ marginTop: 1 }}>
+						{ interviews.interviews.map((interview) => (
+							<option key={interview.id} value={interview.id}>{ interview.candidate.name + ' ' + interviewDateToString(interview) }</option>
 						)) }
 					</Field>
 

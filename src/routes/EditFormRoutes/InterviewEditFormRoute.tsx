@@ -1,5 +1,4 @@
 import React from 'react';
-import { reset } from 'redux-form';
 import { LoaderFunctionArgs } from "react-router";
 import { useLoaderData } from "react-router-dom";
 
@@ -11,6 +10,7 @@ import { updateInterview, selectAllInterviews } from '../../features/interviews/
 import InterviewForm from '../../features/interviews/InterviewForm';
 import { InterviewInfo } from "../../features/interviews/InterviewInfo";
 import { selectAllCandidates } from '../../features/candidates/candidatesSlice';
+import { fetchAllData } from '../../features/fetchAllData';
 
 import Grid from '@mui/material/Grid';
 
@@ -28,6 +28,7 @@ export const InterviewEditFormRoute = () => {
 
 	const onSubmitUpdateInterview = async (values: any, interviewId: string) => {
 		await dispatch(updateInterview({ id: interviewId, date: values.date?.toDate()!, status: values.status, review: values.review, candidate: candidates.candidates.find(x => x.id === values.candidateId)!}));
+		await fetchAllData(dispatch);
 	};
 
 	return (

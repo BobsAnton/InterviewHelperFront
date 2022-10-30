@@ -4,9 +4,6 @@ import { InterviewQuestion } from '../../types/models/interviewQuestionType';
 import { Status } from '../../types/statusType';
 import { Error } from '../../types/errorType';
 
-import { deleteQuestion } from '../questions/questionsSlice';
-import { deleteInterview } from '../interviews/interviewsSlice';
-
 interface InterviewQuestionsState {
 	interviewQuestions: Array<InterviewQuestion>;
 	status: Status;
@@ -62,7 +59,6 @@ const interviewQuestionsSlice = createSlice({
 	reducers: {},
 	extraReducers(builder) {
 		builder
-			// fetchInterviewQuestions
 			.addCase(fetchInterviewQuestions.pending, (state, action) => {
 				state.error = null;
 				state.status = 'loading';
@@ -76,7 +72,6 @@ const interviewQuestionsSlice = createSlice({
 				state.error = action.error.message;
 				state.status = 'failed';
 			})
-			// addNewInterviewQuestion
 			.addCase(addNewInterviewQuestion.pending, (state, action) => {
 				state.error = null;
 				state.status = 'loading';
@@ -90,7 +85,6 @@ const interviewQuestionsSlice = createSlice({
 				state.error = action.error.message;
 				state.status = 'failed';
 			})
-			// updateInterviewQuestion
 			.addCase(updateInterviewQuestion.pending, (state, action) => {
 				state.error = null;
 				state.status = 'loading';
@@ -108,7 +102,6 @@ const interviewQuestionsSlice = createSlice({
 				state.error = action.error.message;
 				state.status = 'failed';
 			})
-			// deleteInterviewQuestion
 			.addCase(deleteInterviewQuestion.pending, (state, action) => {
 				state.error = null;
 				state.status = 'loading';
@@ -121,18 +114,6 @@ const interviewQuestionsSlice = createSlice({
 			.addCase(deleteInterviewQuestion.rejected, (state, action) => {
 				state.error = action.error.message;
 				state.status = 'failed';
-			})
-			// deleteQuestion
-			.addCase(deleteQuestion.fulfilled, (state, action) => {
-				state.error = null;
-				state.status = 'succeeded';
-				state.interviewQuestions = state.interviewQuestions.filter(interviewQuestion => interviewQuestion.question.id !== action.payload.id)
-			})
-			// deleteInterview
-			.addCase(deleteInterview.fulfilled, (state, action) => {
-				state.error = null;
-				state.status = 'succeeded';
-				state.interviewQuestions = state.interviewQuestions.filter(interviewQuestion => interviewQuestion.interview.id !== action.payload.id)
 			});
 	}
 });

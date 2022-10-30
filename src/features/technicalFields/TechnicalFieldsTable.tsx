@@ -2,8 +2,9 @@ import React, { useEffect } from 'react';
 import { Link } from "react-router-dom";
 
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
-import { selectAllTechnicalFields, fetchTechnicalFields } from './technicalFieldsSlice';
+import { selectAllTechnicalFields } from './technicalFieldsSlice';
 import { DeleteTechnicalFieldButton } from './DeleteTechnicalFieldButton';
+import { fetchAllData } from '../fetchAllData';
 
 import Paper from '@mui/material/Paper';
 import TableContainer from '@mui/material/TableContainer';
@@ -21,7 +22,7 @@ export const TechnicalFieldsTable = () => {
 
 	useEffect(() => {
 		if (technicalFieldsStatus === 'idle') {
-			dispatch(fetchTechnicalFields());
+			(async () => await fetchAllData(dispatch))();
 		}
 	}, [technicalFieldsStatus, dispatch]);
 

@@ -3,6 +3,7 @@ import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import { deleteQuestion } from './questionsSlice';
 import { Question } from "../../types/models/questionType";
 import { selectAllInterviewQuestions } from '../interviewQuestions/interviewQuestionsSlice';
+import { fetchAllData } from '../fetchAllData';
 
 import Button from '@mui/material/Button';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -21,6 +22,7 @@ export const DeleteQuestionButton = (question: Question) => {
 	const onDeleteQuestionClicked = async () => {
 		setOpenDeleteDialog(false);
 		await dispatch(deleteQuestion(question));
+		await fetchAllData(dispatch);
 	};
 
 	const handleOpenDeleteDialog = () => {	setOpenDeleteDialog(true); };

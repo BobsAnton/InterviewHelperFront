@@ -2,8 +2,9 @@ import React, { useEffect } from 'react';
 import { Link } from "react-router-dom";
 
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
-import { selectAllQuestions, fetchQuestions } from './questionsSlice';
+import { selectAllQuestions } from './questionsSlice';
 import { DeleteQuestionButton } from './DeleteQuestionButton';
+import { fetchAllData } from '../fetchAllData';
 
 import Paper from '@mui/material/Paper';
 import TableContainer from '@mui/material/TableContainer';
@@ -21,7 +22,7 @@ export const QuestionsTable = () => {
 
 	useEffect(() => {
 		if (questionsStatus === 'idle') {
-			dispatch(fetchQuestions());
+			(async () => await fetchAllData(dispatch))();
 		}
 	}, [questionsStatus, dispatch]);
 

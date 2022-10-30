@@ -1,5 +1,4 @@
 import React from 'react';
-import { reset } from 'redux-form';
 import { LoaderFunctionArgs } from "react-router";
 import { useLoaderData } from "react-router-dom";
 
@@ -11,6 +10,7 @@ import { updateQuestion, selectAllQuestions } from '../../features/questions/que
 import QuestionForm from '../../features/questions/QuestionForm';
 import { QuestionInfo } from "../../features/questions/QuestionInfo";
 import { selectAllTechnicalFields } from '../../features/technicalFields/technicalFieldsSlice';
+import { fetchAllData } from '../../features/fetchAllData';
 
 import Grid from '@mui/material/Grid';
 
@@ -28,6 +28,7 @@ export const QuestionEditFormRoute = () => {
 
 	const onSubmitUpdateQuestion = async (values: any, questionId: string) => {
 		await dispatch(updateQuestion({ id: questionId, name: values.name, description: values.description, complexity: values.complexity, technicalField: technicalFields.technicalFields.find(x => x.id === values.technicalFieldId)!}));
+		await fetchAllData(dispatch);
 	};
 
 	return (
