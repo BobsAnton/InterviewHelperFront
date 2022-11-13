@@ -75,9 +75,16 @@ const questionsSlice = createSlice({
 				state.status = 'loading';
 			})
 			.addCase(fetchQuestions.fulfilled, (state, action) => {
-				state.error = null;
-				state.status = 'succeeded';
-				state.questions = action.payload;
+				if (action.payload.error) {
+					state.error = action.payload.error;
+					state.status = 'failed';
+					localStorage.removeItem("token");
+				}
+				else {
+					state.error = null;
+					state.status = 'succeeded';
+					state.questions = action.payload;
+				}
 			})
 			.addCase(fetchQuestions.rejected, (state, action) => {
 				state.error = action.error.message;

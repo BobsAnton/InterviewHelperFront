@@ -6,6 +6,7 @@ import { useAppDispatch } from '../app/hooks';
 import LoginForm from '../features/auth/LoginForm';
 import RegistrationForm from '../features/auth/RegistrationForm';
 import { signUp, signIn } from '../features/auth/authSlice';
+import { fetchAllData } from '../features/fetchAllData';
 
 import Grid from '@mui/material/Grid';
 import Tabs from '@mui/material/Tabs';
@@ -54,6 +55,7 @@ export const LoginPage = () => {
 		}));
 		dispatch(reset('LoginForm'));
 		if (localStorage.getItem("token")) {
+			await fetchAllData(dispatch);
 			navigate('/');
 		}
 	};

@@ -75,9 +75,16 @@ const technicalFieldsSlice = createSlice({
 				state.status = 'loading';
 			})
 			.addCase(fetchTechnicalFields.fulfilled, (state, action) => {
-				state.error = null;
-				state.status = 'succeeded';
-				state.technicalFields = action.payload;
+				if (action.payload.error) {
+					state.error = action.payload.error;
+					state.status = 'failed';
+					localStorage.removeItem("token");
+				}
+				else {
+					state.error = null;
+					state.status = 'succeeded';
+					state.technicalFields = action.payload;
+				}
 			})
 			.addCase(fetchTechnicalFields.rejected, (state, action) => {
 				state.error = action.error.message;

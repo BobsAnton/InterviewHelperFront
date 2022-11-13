@@ -75,9 +75,16 @@ const interviewQuestionsSlice = createSlice({
 				state.status = 'loading';
 			})
 			.addCase(fetchInterviewQuestions.fulfilled, (state, action) => {
-				state.error = null;
-				state.status = 'succeeded';
-				state.interviewQuestions = action.payload;
+				if (action.payload.error) {
+					state.error = action.payload.error;
+					state.status = 'failed';
+					localStorage.removeItem("token");
+				}
+				else {
+					state.error = null;
+					state.status = 'succeeded';
+					state.interviewQuestions = action.payload;
+				}
 			})
 			.addCase(fetchInterviewQuestions.rejected, (state, action) => {
 				state.error = action.error.message;

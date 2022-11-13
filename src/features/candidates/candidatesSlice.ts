@@ -88,9 +88,16 @@ const candidatesSlice = createSlice({
 				state.status = 'loading';
 			})
 			.addCase(addNewCandidate.fulfilled, (state, action) => {
-				state.error = null;
-				state.status = 'succeeded';
-				state.candidates.push(action.payload);
+				if (action.payload.error) {
+					state.error = action.payload.error;
+					state.status = 'failed';
+					localStorage.removeItem("token");
+				}
+				else {
+					state.error = null;
+					state.status = 'succeeded';
+					state.candidates.push(action.payload);
+				}
 			})
 			.addCase(addNewCandidate.rejected, (state, action) => {
 				state.error = action.error.message;
