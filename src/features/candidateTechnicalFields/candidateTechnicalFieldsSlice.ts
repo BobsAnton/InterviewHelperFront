@@ -17,7 +17,12 @@ const initialState: CandidateTechnicalFieldsState = {
 };
 
 export const fetchCandidateTechnicalFields = createAsyncThunk('candidateTechnicalFields/fetchCandidateTechnicalFields', async () => {
-	return (await fetch('http://localhost:8081/candidate-technical-fields')).json();
+	return (await fetch('http://localhost:8081/candidate-technical-fields', {
+		headers: {
+			'Authorization':
+				`JWT ${localStorage.getItem("token")}`
+		}
+	})).json();
 });
 
 export const addNewCandidateTechnicalField = createAsyncThunk('candidateTechnicalFields/addNewCandidateTechnicalField', async (newCandidateTechnicalField: CandidateTechnicalField) => {
@@ -25,7 +30,9 @@ export const addNewCandidateTechnicalField = createAsyncThunk('candidateTechnica
 		method: 'POST',
 		headers: {
 			'Content-Type':
-				'application/json;charset=utf-8'
+				'application/json;charset=utf-8',
+			'Authorization':
+				`JWT ${localStorage.getItem("token")}`
 		},
 		body: JSON.stringify(newCandidateTechnicalField)
 	})).json();
@@ -36,7 +43,9 @@ export const deleteCandidateTechnicalField = createAsyncThunk('candidateTechnica
 		method: 'DELETE',
 		headers: {
 			'Content-Type':
-				'application/json;charset=utf-8'
+				'application/json;charset=utf-8',
+			'Authorization':
+				`JWT ${localStorage.getItem("token")}`
 		},
 		body: JSON.stringify(candidateTechnicalFieldToDelete)
 	})).json();

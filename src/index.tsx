@@ -2,13 +2,15 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 
 import { Provider } from 'react-redux';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { Route, createBrowserRouter, createRoutesFromElements, RouterProvider } from 'react-router-dom';
 
 import store from './app/store';
-import { ErrorPage } from "./app/ErrorPage";
 
 import App from "./App";
+import { PrivateRoute } from "./app/PrivateRoute";
+import { ErrorPage } from "./app/ErrorPage";
 
+import { LoginPage } from "./routes/LoginPage";
 import { QuestionsRoute } from "./routes/QuestionsRoute";
 import { InterviewsRoute } from "./routes/InterviewsRoute";
 import { CandidatesRoute } from "./routes/CandidatesRoute";
@@ -19,60 +21,23 @@ import { InterviewQuestionEditFormRoute, loader as interviewQuestionLoader } fro
 import { QuestionEditFormRoute, loader as questionLoader } from "./routes/EditFormRoutes/QuestionEditFormRoute";
 import { TechnicalFieldEditFormRoute, loader as technicalFieldLoader } from "./routes/EditFormRoutes/TechnicalFieldEditFormRoute";
 
-const router = createBrowserRouter([
-	{
-	  path: "/",
-	  element: <App />,
-	  errorElement: <ErrorPage />,
-	  children: [
-		{
-			path: "/",
-			element: <QuestionsRoute />
-		},
-		{
-			path: "/questions",
-			element: <QuestionsRoute />
-		},
-		{
-			path: "questions/:questionId",
-			element: <QuestionEditFormRoute />,
-			loader: questionLoader
-		},
-		{
-			path: "technicalFields/:technicalFieldId",
-			element: <TechnicalFieldEditFormRoute />,
-			loader: technicalFieldLoader
-		},
-		{
-			path: "candidates",
-			element: <CandidatesRoute />
-		},
-		{
-			path: "candidates/:candidateId",
-			element: <CandidateEditFormRoute />,
-			loader: candidateLoader
-		},
-		{
-			path: "interviews",
-			element: <InterviewsRoute />
-		},
-		{
-			path: "interviewQuestions/:interviewQuestionId",
-			element: <InterviewQuestionEditFormRoute />,
-			loader: interviewQuestionLoader
-		},
-		{
-			path: "new-interview",
-			element: <NewInterviewRoute />
-		},
-		{
-			path: "interviews/:interviewId",
-			element: <InterviewEditFormRoute />,
-			loader: interviewLoader
-		}
-	  ]
-	}
-  ]);
+const router = createBrowserRouter(
+	createRoutesFromElements(
+		<Route path="/" element={<App />} errorElement={<ErrorPage />}>
+			<Route path="/login" element={<LoginPage/>} />
+			<Route path="/" element={<PrivateRoute><QuestionsRoute /></PrivateRoute>} />
+  			<Route path="/questions" element={<PrivateRoute><QuestionsRoute /></PrivateRoute>} />
+  			<Route path="questions/:questionId" element={<PrivateRoute><QuestionEditFormRoute /></PrivateRoute>} loader={questionLoader} />
+  			<Route path="technicalFields/:technicalFieldId" element={<PrivateRoute><TechnicalFieldEditFormRoute /></PrivateRoute>} loader={technicalFieldLoader}/>
+  			<Route path="candidates" element={<PrivateRoute><CandidatesRoute /></PrivateRoute>} />
+  			<Route path="candidates/:candidateId" element={<PrivateRoute><CandidateEditFormRoute /></PrivateRoute>} loader={candidateLoader} />
+  			<Route path="interviews" element={<PrivateRoute><InterviewsRoute /></PrivateRoute>} />
+  			<Route path="interviewQuestions/:interviewQuestionId" element={<PrivateRoute><InterviewQuestionEditFormRoute /></PrivateRoute>} loader={interviewQuestionLoader} />
+  			<Route path="new-interview" element={<PrivateRoute><NewInterviewRoute /></PrivateRoute>} />
+  			<Route path="interviews/:interviewId" element={<PrivateRoute><InterviewEditFormRoute /></PrivateRoute>} loader={interviewLoader}/>
+  		</Route>
+	)
+  );
 
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
 root.render(

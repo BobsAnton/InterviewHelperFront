@@ -17,7 +17,12 @@ const initialState: QuestionsState = {
 };
 
 export const fetchQuestions = createAsyncThunk('questions/fetchQuestions', async () => {
-	return (await fetch('http://localhost:8081/questions')).json();
+	return (await fetch('http://localhost:8081/questions', {
+		headers: {
+			'Authorization':
+				`JWT ${localStorage.getItem("token")}`
+		}
+	})).json();
 });
 
 export const addNewQuestion = createAsyncThunk('questions/addNewQuestion', async (newQuestion: Question) => {
@@ -25,7 +30,9 @@ export const addNewQuestion = createAsyncThunk('questions/addNewQuestion', async
 		method: 'POST',
 		headers: {
 			'Content-Type':
-				'application/json;charset=utf-8'
+				'application/json;charset=utf-8',
+			'Authorization':
+				`JWT ${localStorage.getItem("token")}`
 		},
 		body: JSON.stringify(newQuestion)
 	})).json();
@@ -36,7 +43,9 @@ export const updateQuestion = createAsyncThunk('questions/updateQuestion', async
 		method: 'PUT',
 		headers: {
 			'Content-Type':
-				'application/json;charset=utf-8'
+				'application/json;charset=utf-8',
+			'Authorization':
+				`JWT ${localStorage.getItem("token")}`
 		},
 		body: JSON.stringify(questionToUpdate)
 	})).json();
@@ -47,7 +56,9 @@ export const deleteQuestion = createAsyncThunk('questions/deleteQuestion', async
 		method: 'DELETE',
 		headers: {
 			'Content-Type':
-				'application/json;charset=utf-8'
+				'application/json;charset=utf-8',
+			'Authorization':
+				`JWT ${localStorage.getItem("token")}`
 		},
 		body: JSON.stringify(questionToDelete)
 	})).json();

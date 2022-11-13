@@ -17,7 +17,12 @@ const initialState: TechnicalFieldsState = {
 };
 
 export const fetchTechnicalFields = createAsyncThunk('technicalFields/fetchTechnicalFields', async () => {
-	return (await fetch('http://localhost:8081/technical-fields')).json();
+	return (await fetch('http://localhost:8081/technical-fields', {
+		headers: {
+			'Authorization':
+				`JWT ${localStorage.getItem("token")}`
+		}
+	})).json();
 });
 
 export const addNewTechnicalField = createAsyncThunk('technicalFields/addNewTechnicalField', async (newTechnicalField: TechnicalField) => {
@@ -25,7 +30,9 @@ export const addNewTechnicalField = createAsyncThunk('technicalFields/addNewTech
 		method: 'POST',
 		headers: {
 			'Content-Type':
-				'application/json;charset=utf-8'
+				'application/json;charset=utf-8',
+			'Authorization':
+				`JWT ${localStorage.getItem("token")}`
 		},
 		body: JSON.stringify(newTechnicalField)
 	})).json();
@@ -36,7 +43,9 @@ export const updateTechnicalField = createAsyncThunk('technicalFields/updateTech
 		method: 'PUT',
 		headers: {
 			'Content-Type':
-				'application/json;charset=utf-8'
+				'application/json;charset=utf-8',
+			'Authorization':
+				`JWT ${localStorage.getItem("token")}`
 		},
 		body: JSON.stringify(technicalFieldToUpdate)
 	})).json();
@@ -47,7 +56,9 @@ export const deleteTechnicalField = createAsyncThunk('technicalFields/deleteTech
 		method: 'DELETE',
 		headers: {
 			'Content-Type':
-				'application/json;charset=utf-8'
+				'application/json;charset=utf-8',
+			'Authorization':
+				`JWT ${localStorage.getItem("token")}`
 		},
 		body: JSON.stringify(technicalFieldToDelete)
 	})).json();

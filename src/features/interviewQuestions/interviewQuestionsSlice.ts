@@ -17,7 +17,12 @@ const initialState: InterviewQuestionsState = {
 };
 
 export const fetchInterviewQuestions = createAsyncThunk('interviewQuestions/fetchInterviewQuestions', async () => {
-	return (await fetch('http://localhost:8081/interview-questions')).json();
+	return (await fetch('http://localhost:8081/interview-questions', {
+		headers: {
+			'Authorization':
+				`JWT ${localStorage.getItem("token")}`
+		}
+	})).json();
 });
 
 export const addNewInterviewQuestion = createAsyncThunk('interviewQuestions/addNewInterviewQuestion', async (newInterviewQuestion: InterviewQuestion) => {
@@ -25,7 +30,9 @@ export const addNewInterviewQuestion = createAsyncThunk('interviewQuestions/addN
 		method: 'POST',
 		headers: {
 			'Content-Type':
-				'application/json;charset=utf-8'
+				'application/json;charset=utf-8',
+			'Authorization':
+				`JWT ${localStorage.getItem("token")}`
 		},
 		body: JSON.stringify(newInterviewQuestion)
 	})).json();
@@ -36,7 +43,9 @@ export const updateInterviewQuestion = createAsyncThunk('interviewQuestions/upda
 		method: 'PUT',
 		headers: {
 			'Content-Type':
-				'application/json;charset=utf-8'
+				'application/json;charset=utf-8',
+			'Authorization':
+				`JWT ${localStorage.getItem("token")}`
 		},
 		body: JSON.stringify(interviewQuestionToUpdate)
 	})).json();
@@ -47,7 +56,9 @@ export const deleteInterviewQuestion = createAsyncThunk('interviewQuestions/dele
 		method: 'DELETE',
 		headers: {
 			'Content-Type':
-				'application/json;charset=utf-8'
+				'application/json;charset=utf-8',
+			'Authorization':
+				`JWT ${localStorage.getItem("token")}`
 		},
 		body: JSON.stringify(interviewQuestionToDelete)
 	})).json();

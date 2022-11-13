@@ -17,7 +17,12 @@ const initialState: CandidatesState = {
 };
 
 export const fetchCandidates = createAsyncThunk('candidates/fetchCandidates', async () => {
-	return (await fetch('http://localhost:8081/candidates')).json();
+	return (await fetch('http://localhost:8081/candidates', {
+		headers: {
+			'Authorization':
+				`JWT ${localStorage.getItem("token")}`
+		}
+	})).json();
 });
 
 export const addNewCandidate = createAsyncThunk('candidates/addNewCandidate', async (newCandidate: Candidate) => {
@@ -25,7 +30,9 @@ export const addNewCandidate = createAsyncThunk('candidates/addNewCandidate', as
 		method: 'POST',
 		headers: {
 			'Content-Type':
-				'application/json;charset=utf-8'
+				'application/json;charset=utf-8',
+			'Authorization':
+				`JWT ${localStorage.getItem("token")}`
 		},
 		body: JSON.stringify(newCandidate)
 	})).json();
@@ -36,7 +43,9 @@ export const updateCandidate = createAsyncThunk('candidates/updateCandidate', as
 		method: 'PUT',
 		headers: {
 			'Content-Type':
-				'application/json;charset=utf-8'
+				'application/json;charset=utf-8',
+			'Authorization':
+				`JWT ${localStorage.getItem("token")}`
 		},
 		body: JSON.stringify(candidateToUpdate)
 	})).json();
@@ -47,7 +56,9 @@ export const deleteCandidate = createAsyncThunk('candidates/deleteCandidate', as
 		method: 'DELETE',
 		headers: {
 			'Content-Type':
-				'application/json;charset=utf-8'
+				'application/json;charset=utf-8',
+			'Authorization':
+				`JWT ${localStorage.getItem("token")}`
 		},
 		body: JSON.stringify(candidateToDelete)
 	})).json();

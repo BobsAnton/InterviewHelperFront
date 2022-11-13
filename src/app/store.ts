@@ -7,6 +7,7 @@ import interviewQuestionsReducer from '../features/interviewQuestions/interviewQ
 import interviewsReducer from '../features/interviews/interviewsSlice';
 import questionsReducer from '../features/questions/questionsSlice';
 import technicalFieldsReducer from '../features/technicalFields/technicalFieldsSlice';
+import authReducer from '../features/auth/authSlice';
 
 const store = configureStore({
 	reducer: {
@@ -16,7 +17,8 @@ const store = configureStore({
 		interviewQuestions: interviewQuestionsReducer,
 		interviews: interviewsReducer,
 		questions: questionsReducer,
-		technicalFields: technicalFieldsReducer
+		technicalFields: technicalFieldsReducer,
+		auth: authReducer
 	}
 });
 
